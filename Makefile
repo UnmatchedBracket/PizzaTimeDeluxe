@@ -1,4 +1,4 @@
-.PHONY: build run buildrun dualrun builddualrun
+.PHONY: build run buildrun dualrun builddualrun releasebuild
 
 build:
 	rm -f ../build.pk3
@@ -13,3 +13,6 @@ dualrun:
 	cd ~/.srb2/; ./lsdl2srb2 $(SRB2OPT) -server -file $(CURDIR)/build.pk3 & ./lsdl2srb2 $(SRB2OPT) -connect localhost -file $(CURDIR)/build.pk3
 
 builddualrun: build dualrun
+
+releasebuild: build
+	cp build.pk3 L_PizzaTimeBracEdition-v$(shell read -p "Version (e.g. 1.2.1): " ver && echo $$ver).pk3

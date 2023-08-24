@@ -204,6 +204,7 @@ addHook("MobjThinker", function(mobj)
 	if mobj.targetplayer and mobj.targetplayer.valid and mobj.targetplayer.mo and mobj.targetplayer.mo.valid then
 		local targetplayer = mobj.targetplayer
 		P_MoveOrigin(mobj, targetplayer.mo.x, targetplayer.mo.y, targetplayer.mo.z)
+		mobj.angle = targetplayer.drawangle
 		local thisMask = pfmaskData[targetplayer.PTBE_pizzastyle]
 		if mobj.state ~= thisMask.state then
 			mobj.state = thisMask.state
