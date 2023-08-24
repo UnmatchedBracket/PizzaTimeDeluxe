@@ -12,7 +12,7 @@ mobjinfo[MT_PIZZAMASK] = {
 
 states[S_PIZZAFACE] = {
     sprite = SPR_PZAT,
-    frame = FF_ANIMATE|A,
+    frame = FF_ANIMATE|FF_FULLBRIGHT|A,
     tics = -1,
     var1 = P,
     var2 = 2,
@@ -21,7 +21,7 @@ states[S_PIZZAFACE] = {
 
 states[S_CONEBALL] = {
     sprite = SPR_CONB,
-    frame = FF_ANIMATE|A,
+    frame = FF_ANIMATE|FF_FULLBRIGHT|A,
     tics = -1,
     var1 = H,
     var2 = 2,
@@ -30,7 +30,7 @@ states[S_CONEBALL] = {
 
 states[S_PF_EGGMAN] = {
     sprite = SPR_EGGM,
-    frame = A,
+    frame = FF_FULLBRIGHT|A,
     tics = -1,
     nextstate = S_PF_EGGMAN
 }
