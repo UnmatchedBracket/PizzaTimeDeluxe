@@ -125,6 +125,7 @@ addHook("PlayerThink", function(player)
 			player.pizzamask = P_SpawnMobj(player.realmo.x,player.realmo.y,player.realmo.z,MT_PIZZAMASK)
 			player.pizzamask.targetplayer = player --dream reference
 			player.pizzamask.scale = pfmaskData[1].scale
+			player.pizzamask.pizzastyle = 1
 		end
 		
 		if player.pizzamask then
@@ -200,19 +201,67 @@ end)
 
 -- Pizza Mask Thinker
 addHook("MobjThinker", function(mobj)
+
+	--TODO: it seems like the object isn't holding user values??? pizzahunt gets flipped to nil every frame
+	-- try using quittime = 1 to keep the player ingame and putting values on him instead
+
+	print("it is " .. tostring(mobj.pizzahunt))
 	if gametype ~= GT_PIZZATIMEBRAC then return end
 	if mobj.targetplayer and mobj.targetplayer.valid and mobj.targetplayer.mo and mobj.targetplayer.mo.valid then
 		local targetplayer = mobj.targetplayer
-		P_MoveOrigin(mobj, targetplayer.mo.x, targetplayer.mo.y, targetplayer.mo.z)
-		local thisMask = pfmaskData[targetplayer.PTBE_pizzastyle]
-		if mobj.state ~= thisMask.state then
-			mobj.state = thisMask.state
-			mobj.scale = thisMask.scale
+		if targetplayer and not targetplayer.quittime then
+			if mobj.pizzahunt then
+				-- stop the hunt
+				-- flip flags back off
+				chatprint("\x85*" .. pfmaskData[mobj.pizzastyle].name .. " is no longer AI-controlled.") 
+				mobj.pizzahunt = 0
+				mobj.flags = $ & ~(MF_SPECIAL | MF_NOCLIPHEIGHT)
+			end
+			P_MoveOrigin(mobj, targetplayer.mo.x, targetplayer.mo.y, targetplayer.mo.z)
+			mobj.angle = targetplayer.drawangle
+			local thisMask = pfmaskData[targetplayer.PTBE_pizzastyle]
+			if mobj.state ~= thisMask.state then
+				mobj.state = thisMask.state
+				mobj.scale = thisMask.scale
+				mobj.pizzastyle = targetplayer.PTBE_pizzastyle
+			end
+			mobj.flags2 = ($ & ~MF2_OBJECTFLIP) | (targetplayer.mo.flags2 & MF2_OBJECTFLIP)
+			mobj.eflags = ($ & ~MFE_VERTICALFLIP) | (targetplayer.mo.eflags & MFE_VERTICALFLIP)
+			mobj.color = targetplayer.skincolor
+		else
+			-- guess we have to do it ourselves
+			if not mobj.pizzahunt then
+				-- start the hunt
+				-- flip flags and stuff
+				chatprint("\x85*Watch out! There is now a noclip AI " .. pfmaskData[mobj.pizzastyle].name .. " on the loose!") 
+				mobj.pizzahunt = 1
+				print("i made it " .. tostring(mobj.pizzahunt))
+				mobj.flags = ($ | MF_SPECIAL | MF_NOCLIPHEIGHT)
+			end
+			local closest = {
+				player = nil,
+				dist = INT32_MAX
+			}
+			for peppino in players.iterate do
+				if not peppino.realmo then continue end
+				if peppino.pstate == PST_DEAD then continue end
+				local dist = P_AproxDistance(peppino.mo.x - mobj.x, peppino.mo.y - mobj.y)
+				if dist < closest.dist then
+					closest.player = peppino
+					closest.dist = dist
+				end
+			end
+			if closest.player then
+				--[[@type player_t]]
+				local peppino = closest.player
+				local speed = max(peppino.normalspeed, closest.dist / 10)
+				local angle = R_PointToAngle2(mobj.x, mobj.y, peppino.mo.x, peppino.mo.y)
+
+				mobj.momx = FixedMul(cos(angle), speed)
+			end
 		end
-		mobj.flags2 = ($ & ~MF2_OBJECTFLIP) | (targetplayer.mo.flags2 & MF2_OBJECTFLIP)
-		mobj.eflags = ($ & ~MFE_VERTICALFLIP) | (targetplayer.mo.eflags & MFE_VERTICALFLIP)
-		mobj.color = targetplayer.skincolor
 	end
+	print("its still " .. tostring(mobj.pizzahunt))
 end, MT_PIZZAMASK)
 
 --THE BADNIKS ARENT PIZZAHEAD'S ENEMY
