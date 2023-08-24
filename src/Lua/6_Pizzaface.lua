@@ -1,4 +1,4 @@
-freeslot("MT_PIZZAMASK", "S_PIZZAFACE", "S_CONEBALL", "SPR_PZAT", "SPR_CONB")
+freeslot("MT_PIZZAMASK", "S_PIZZAFACE", "S_CONEBALL", "S_PF_EGGMAN", "SPR_PZAT", "SPR_CONB")
 
 mobjinfo[MT_PIZZAMASK] = {
 	doomednum = -1,
@@ -28,8 +28,16 @@ states[S_CONEBALL] = {
     nextstate = S_CONEBALL
 }
 
+states[S_PF_EGGMAN] = {
+    sprite = SPR_EGGM,
+    frame = A,
+    tics = -1,
+    nextstate = S_PF_EGGMAN
+}
+
 rawset(_G, "pfmaskData", {
 	{
+		name = "Pizzaface",
 		state = S_PIZZAFACE,
 		scale = FU/2,
 		trails = {SKINCOLOR_RED, SKINCOLOR_GREEN},
@@ -37,11 +45,20 @@ rawset(_G, "pfmaskData", {
 		emoji = ":pizza:"
 	},
 	{
+		name = "Coneball",
 	    state = S_CONEBALL,
 		scale = 3*FU/4,
 		trails = {SKINCOLOR_SKY, SKINCOLOR_NEON},
 		sound = sfx_coneba,
 		emoji = ":candy:"
+	},
+	{
+		name = "Eggman",
+	    state = S_PF_EGGMAN,
+		scale = FU,
+		trails = {SKINCOLOR_GOLD, SKINCOLOR_FLAME},
+		sound = sfx_bewar3,
+		emoji = ":egg:"
 	}
 })
 
@@ -123,7 +140,7 @@ addHook("PlayerThink", function(player)
 
 			local ghost = P_SpawnGhostMobj(player.pizzamask)
 			P_SetOrigin(ghost, player.pizzamask.x, player.pizzamask.y, player.pizzamask.z)
-			ghost.fuse = 8
+			ghost.fuse = 11
 			ghost.colorized = true
 			local colors = pfmaskData[player.PTBE_pizzastyle].trails
 			if player.redgreen then
@@ -131,7 +148,7 @@ addHook("PlayerThink", function(player)
 			else
 				ghost.color = colors[2]
 			end
-			ghost.frame = $|FF_TRANS10
+			ghost.frame = $|FF_TRANS10|FF_FULLBRIGHT
 			player.redgreen = not player.redgreen
 		end
 		if player.exiting or PTBE.quitting then

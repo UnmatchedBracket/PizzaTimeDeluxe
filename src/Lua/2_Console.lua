@@ -44,6 +44,14 @@ COM_AddCommand("bracpt_doannouncement", function(player, text)
 	brac_addannouncement(3*TICRATE,"\x82\*"..text)
 end,1)
 
+COM_AddCommand("bracpt_pizzatimenow", function(player)
+	if gametype ~= GT_PIZZATIMEBRAC then
+		CONS_Printf(player, "Command must be ran in the Pizza Time Brac Edition mode.")
+		return
+	end
+	PTBE.PizzaTimeTrigger(player.mo)
+end,1)
+
 CV_PTBE.forcelap = CV_RegisterVar({
 	name = "bracpt_forcelap",
 	defaultvalue = "Off",
@@ -203,14 +211,18 @@ CV_PTBE.pizzastyle = CV_RegisterVar({
 	name = "bracpt_pizzastyle",
 	defaultvalue = "pizzaface",
 	flags = CV_SAVE|CV_CALL,
-	PossibleValue = {pizzaface = 1, coneball = 2}, 
+	PossibleValue = {pizzaface = 1, coneball = 2, eggman = 3}, 
 	func = function (cv)
-		if not consoleplayer then return end
 		local name = ({
 			[1] = "Pizzaface",
-			[2] = "Coneball"
+			[2] = "Coneball",
+			[3] = "Eggman"
 		})[cv.value]
-		CONS_Printf(consoleplayer, "You will now appear as " .. name .. " when you're the villian of Pizza Time.")
+		if consoleplayer then
+			CONS_Printf(consoleplayer, "You will now appear as " .. name .. " when you're the villian of Pizza Time.")
+		else
+			print("You will now appear as " .. name .. " when you're the villian of Pizza Time.")
+		end
 	end 
 })
 
