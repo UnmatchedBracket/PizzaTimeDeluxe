@@ -144,7 +144,7 @@ addHook("PlayerThink", function(player)
 		player.ptje_rank = "A"
 	elseif player.score <= pec*6
 		player.ptje_rank = "S"
-	elseif player.score <= pec*7
+	else
 		if player.timeshit then
 			player.ptje_rank = "S"
 		else
