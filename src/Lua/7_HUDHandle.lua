@@ -243,6 +243,9 @@ local rank_hud = function(v,player)
 	if player.pizzaface then return end
 	if player.ptje_rank then
 		v.drawScaled(15*FRACUNIT,60*FRACUNIT,FRACUNIT/2, PTBE.r2p(v,player.ptje_rank), V_SNAPTOLEFT|V_SNAPTOTOP)
+		if player.timeshit then
+			v.drawScaled(15*FRACUNIT,60*FRACUNIT,FRACUNIT/2, PTBE.r2p(v, "BROKEN"), V_SNAPTOLEFT|V_SNAPTOTOP|V_MODULATE|V_50TRANS)
+		end
 	end
 end
 
