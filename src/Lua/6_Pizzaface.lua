@@ -97,6 +97,7 @@ addHook("PlayerThink", function(player)
 			if not player.stuntime and CV_PTBE.pizzalaugh.value and not player.pizzachargecooldown then -- once it hits zero, LAUGH AHHHHAHHAAHAHAHHAHAH
 				S_StartSound(player.mo, pfmaskData[player.PTBE_pizzastyle].sound)
 			elseif PTBE.pizzatime_tics < TICRATE*CV_PTBE.pizzatimestun.value+20 then
+				player.mo.momz = P_MobjFlip(player.mo)*-FU
 				if player.facechangecooldown then
 					player.facechangecooldown = $ - 1
 				else
