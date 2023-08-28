@@ -41,7 +41,7 @@ rawset(_G, "FUNC_PTBE", {}) -- functions
 
 G_AddGametype({
     name = "Pizza Time Deluxe",
-    identifier = "PIZZATIMEPTD",
+    identifier = "PIZZATIMEDELUXE",
     typeoflevel = TOL_RACE,
     rules = GTR_FRIENDLY|GTR_SPAWNENEMIES|GTR_TIMELIMIT,
     intermissiontype = int_match,
