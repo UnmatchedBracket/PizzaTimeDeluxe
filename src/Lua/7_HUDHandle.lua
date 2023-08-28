@@ -27,7 +27,7 @@ local hud_debug2 = CV_RegisterVar({
 local timeafteranimation = 0
 
 local bar_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEBRAC then return end
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if PTBE.pizzatime then
 		local expectedtime = TICRATE*3
 		local start = 300*FRACUNIT -- animation position start
@@ -99,7 +99,7 @@ local bar_hud = function(v,player)
 end
 
 local itspizzatime_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEBRAC then return end
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if PTBE.pizzatime and PTBE.pizzatime_tics and PTBE.pizzatime_tics < 10*TICRATE then
 		local patch = v.cachePatch("ITSPIZZATIME1")
 		if CV_PTBE.homework.value then
@@ -120,8 +120,8 @@ local itspizzatime_hud = function(v,player)
 end
 
 local tooltips_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEBRAC then return end
-	local exitingCount, playerCount = BRAC_COUNT()
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	local exitingCount, playerCount = PTD_COUNT()
 	local practicemodetext = "\x84\* PRACTICE MODE *"
 	local dynamiclapstext = "\x82\* DYNAMIC LAPS: "..PTBE.laps.." / "..PTBE.dynamic_maxlaps.." *"
 	local lapsandmaxlapstext = "\x82\* LAPS: "..PTBE.laps.." / "..CV_PTBE.maxlaps.value.." *"
@@ -214,7 +214,7 @@ local tooltips_hud = function(v,player)
 end
 
 local lap_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEBRAC then return end
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if not player.laptime then return end
 	if player.pizzaface then return end
 	
@@ -239,7 +239,7 @@ local lap_hud = function(v,player)
 end
 
 local rank_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEBRAC then return end
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if player.pizzaface then return end
 	if player.ptje_rank then
 		v.drawScaled(15*FRACUNIT,60*FRACUNIT,FRACUNIT/2, PTBE.r2p(v,player.ptje_rank), V_SNAPTOLEFT|V_SNAPTOTOP)
@@ -250,7 +250,7 @@ local rank_hud = function(v,player)
 end
 
 local event_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEBRAC then return end
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if not PTBE.currentEvent then return end
 	local event = PTBE.currentEvent
 	if leveltime > TICRATE*3 then return end
@@ -262,7 +262,7 @@ local event_hud = function(v,player)
 end
 
 local faceswap_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEBRAC then return end
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if not (player.pizzaface and leveltime) then return end
 	if player.stuntime and PTBE.pizzatime_tics < TICRATE*CV_PTBE.pizzatimestun.value+20 then
 		v.drawString(160, 150, "Move left and right to swap faces", V_ALLOWLOWERCASE, "small-center")

@@ -40,8 +40,8 @@ rawset(_G, "FUNC_PTBE", {}) -- functions
 
 
 G_AddGametype({
-    name = "Pizza Time Bracket Edition",
-    identifier = "PIZZATIMEBRAC",
+    name = "Pizza Time Deluxe",
+    identifier = "PIZZATIMEPTD",
     typeoflevel = TOL_RACE,
     rules = GTR_FRIENDLY|GTR_SPAWNENEMIES|GTR_TIMELIMIT,
     intermissiontype = int_match,
@@ -134,7 +134,7 @@ PTBE.end_location.angle == 0
 
 
 
-rawset(_G, "BRAC_COUNT", do
+rawset(_G, "PTD_COUNT", do
 	local playerCount = 0
 	local exitingCount = 0
 	local pizzaCount = 0
@@ -169,7 +169,7 @@ local function InitMap()
 end
 
 local function InitMap2()
-    if gametype ~= GT_PIZZATIMEBRAC then return end
+    if gametype ~= GT_PIZZATIMEDELUXE then return end
 	PTBE.john = nil
     for map in mapthings.iterate do
         if map.type == 1 then
@@ -282,7 +282,7 @@ PTBE.PizzaTimeTrigger = function(mobj)
 		PTBE.laps = 1
 		
 		--hit the player that touched the location with these variables
-		local _, playerCount = BRAC_COUNT()
+		local _, playerCount = PTD_COUNT()
 		if playerCount > 1 then
 			if CV_PTBE.pizzachoosetype.value == 1 then
 				mobj.player.pizzaface = true
@@ -378,6 +378,6 @@ addHook("MapLoad", InitMap2)
 
 
 
-rawset(_G, "GT_PIZZATIMEJISK", GT_PIZZATIMEBRAC)
+rawset(_G, "GT_PIZZATIMEJISK", GT_PIZZATIMEDELUXE)
 rawset(_G, "PTJE", PTBE)
-rawset(_G, "JISK_COUNT", BRAC_COUNT)
+rawset(_G, "JISK_COUNT", PTD_COUNT)

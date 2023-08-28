@@ -6,7 +6,7 @@ local function registerIt(successValue)
 	oldFunc = DiscordBot.Functions.statsofserver
 	
 	DiscordBot.Functions.statsofserver = function()
-		if gametype ~= GT_PIZZATIMEBRAC then return oldFunc() end
+		if gametype ~= GT_PIZZATIMEDELUXE then return oldFunc() end
 	
 		local playerstats = ''
 		for player in players.iterate do

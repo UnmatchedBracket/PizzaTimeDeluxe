@@ -5,7 +5,7 @@ PTBE.currentEvent = nil
 local frozen = true
 
 addHook("MapLoad", function ()
-	if gametype ~= GT_PIZZATIMEBRAC then return end
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
 
 	if PTBE.currentEvent then
 		if PTBE.currentEvent.name == "mirror" then

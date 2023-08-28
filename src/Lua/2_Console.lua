@@ -1,8 +1,8 @@
 rawset(_G, "CV_PTBE", {}) -- for console vars
 
-COM_AddCommand("bracpt_makepizza", function(player, arg)
-	if gametype ~= GT_PIZZATIMEBRAC then
-		CONS_Printf(player, "Command must be ran in the Pizza Time Brac Edition mode.")
+COM_AddCommand("ptd_makepizza", function(player, arg)
+	if gametype ~= GT_PIZZATIMEDELUXE then
+		CONS_Printf(player, "Command must be ran in the Pizza Time Deluxe mode.")
 		return
 	end
 	if tonumber(arg) == nil then
@@ -29,170 +29,156 @@ COM_AddCommand("bracpt_makepizza", function(player, arg)
 	end
 end,1)
 
-COM_AddCommand("bracpt_doannouncement", function(player, text)
-	if gametype ~= GT_PIZZATIMEBRAC then
-		CONS_Printf(player, "Command must be ran in the Pizza Time Brac Edition mode.")
-		return
-	end
-	if text == nil then
-		CONS_Printf(player, "arg1 must be valid.")
-		return
-	end
-	
-	
-	
-	brac_addannouncement(3*TICRATE,"\x82\*"..text)
-end,1)
 
-COM_AddCommand("bracpt_pizzatimenow", function(player)
-	if gametype ~= GT_PIZZATIMEBRAC then
-		CONS_Printf(player, "Command must be ran in the Pizza Time Brac Edition mode.")
+COM_AddCommand("ptd_pizzatimenow", function(player)
+	if gametype ~= GT_PIZZATIMEDELUXE then
+		CONS_Printf(player, "Command must be ran in the Pizza Time Deluxe mode.")
 		return
 	end
 	PTBE.PizzaTimeTrigger(player.mo)
 end,1)
 
 CV_PTBE.forcelap = CV_RegisterVar({
-	name = "bracpt_forcelap",
+	name = "ptd_forcelap",
 	defaultvalue = "Off",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
 CV_PTBE.maxlaps = CV_RegisterVar({
-	name = "bracpt_maxlaps",
+	name = "ptd_maxlaps",
 	defaultvalue = "16",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
 CV_PTBE.maxlaps_perplayer = CV_RegisterVar({
-	name = "bracpt_maxlaps_perplayer",
+	name = "ptd_maxlaps_perplayer",
 	defaultvalue = "5",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
 CV_PTBE.lappingtype = CV_RegisterVar({
-	name = "bracpt_lappingtype",
+	name = "ptd_lappingtype",
 	defaultvalue = "2",
 	flags = CV_NETVAR,
 	PossibleValue = {shared = 1, perplayer = 2}, 
 })
 
 CV_PTBE.pizzatimestun = CV_RegisterVar({
-	name = "bracpt_pizzatimestun",
+	name = "ptd_pizzatimestun",
 	defaultvalue = "10",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
 CV_PTBE.fakelapstun = CV_RegisterVar({
-	name = "bracpt_fakelapstun",
+	name = "ptd_fakelapstun",
 	defaultvalue = "3",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
 CV_PTBE.tpinv = CV_RegisterVar({
-	name = "bracpt_tpinv",
+	name = "ptd_tpinv",
 	defaultvalue = "3", -- IN SECONDS
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
 CV_PTBE.dynamiclaps = CV_RegisterVar({
-	name = "bracpt_dynamiclaps",
+	name = "ptd_dynamiclaps",
 	defaultvalue = "Off",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
 CV_PTBE.showdeaths = CV_RegisterVar({
-	name = "bracpt_showdeaths",
+	name = "ptd_showdeaths",
 	defaultvalue = "On",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
 CV_PTBE.pizzalaugh = CV_RegisterVar({ -- Whenever the pizzaface laugh plays when pizzatime starts.
-	name = "bracpt_pizzalaugh",
+	name = "ptd_pizzalaugh",
 	defaultvalue = "On",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
 CV_PTBE.homework = CV_RegisterVar({
-	name = "bracpt_homework",
+	name = "ptd_homework",
 	defaultvalue = "Off",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
 CV_PTBE.collisionsystem = CV_RegisterVar({
-	name = "bracpt_collisionsystem",
+	name = "ptd_collisionsystem",
 	defaultvalue = "1",
 	flags = CV_NETVAR,
 	PossibleValue = {line = 1},  -- , locationcheck = 2
 })
 
 CV_PTBE.timelimit = CV_RegisterVar({
-	name = "bracpt_timelimit",
+	name = "ptd_timelimit",
 	defaultvalue = "4", -- in minutes
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
 CV_PTBE.pizzachoosetype = CV_RegisterVar({
-	name = "bracpt_pizzachoosetype",
+	name = "ptd_pizzachoosetype",
 	defaultvalue = "3",
 	flags = CV_NETVAR,
 	PossibleValue = {firsttrigger = 1, random = 2, allbutfirst = 3}, 
 })
 
 CV_PTBE.pizzacount = CV_RegisterVar({
-	name = "bracpt_pizzacount",
+	name = "ptd_pizzacount",
 	defaultvalue = "1",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Natural, 
 })
 
 CV_PTBE.pizzatpcooldown = CV_RegisterVar({
-	name = "bracpt_pizzatpcooldown",
+	name = "ptd_pizzatpcooldown",
 	defaultvalue = "5",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
 CV_PTBE.pizzatpstuntime = CV_RegisterVar({
-	name = "bracpt_pizzatpstuntime",
+	name = "ptd_pizzatpstuntime",
 	defaultvalue = "2",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
 CV_PTBE.nomusic = CV_RegisterVar({
-	name = "bracpt_nomusic",
+	name = "ptd_nomusic",
 	defaultvalue = "off",
 	PossibleValue = CV_OnOff, 
 })
 
 CV_PTBE.scoreonkill = CV_RegisterVar({
-	name = "bracpt_scoreonkill",
+	name = "ptd_scoreonkill",
 	defaultvalue = "on",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
 CV_PTBE.killwhilerunning = CV_RegisterVar({
-	name = "bracpt_killwhilerunning",
+	name = "ptd_killwhilerunning",
 	defaultvalue = "on",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
 CV_PTBE.screams = CV_RegisterVar({
-	name = "bracpt_screams",
+	name = "ptd_screams",
 	defaultvalue = "off",
 	flags = CV_SAVE,
 	PossibleValue = CV_OnOff, 
@@ -200,7 +186,7 @@ CV_PTBE.screams = CV_RegisterVar({
 
 
 CV_PTBE.pizzamask = CV_RegisterVar({
-	name = "bracpt_pizzamask",
+	name = "ptd_pizzamask",
 	defaultvalue = "on",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
@@ -208,7 +194,7 @@ CV_PTBE.pizzamask = CV_RegisterVar({
 
 
 CV_PTBE.pizzastyle = CV_RegisterVar({
-	name = "bracpt_pizzastyle",
+	name = "ptd_pizzastyle",
 	defaultvalue = "pizzaface",
 	flags = CV_SAVE|CV_CALL,
 	PossibleValue = {pizzaface = 1, coneball = 2, eggman = 3}, 
@@ -228,9 +214,9 @@ CV_PTBE.pizzastyle = CV_RegisterVar({
 
 local luaOnly = "iamlua" .. P_RandomFixed()
 
-COM_AddCommand("_bracpt_pizzastyle_sync", function(player, blah, set)
+COM_AddCommand("_ptd_pizzastyle_sync", function(player, blah, set)
 	if blah ~= luaOnly then
-		CONS_Printf(player, "Don't run this manually! Instead, set `bracpt_pizzastyle`")
+		CONS_Printf(player, "Don't run this manually! Instead, set `ptd_pizzastyle`")
 		return
 	end
 	
@@ -241,13 +227,13 @@ addHook("ThinkFrame", function ()
 	if not consoleplayer then return end
 	
 	if consoleplayer.PTBE_pizzastyle ~= CV_PTBE.pizzastyle.value then
-		COM_BufInsertText(consoleplayer, "_bracpt_pizzastyle_sync " .. luaOnly .. " " .. CV_PTBE.pizzastyle.value)
+		COM_BufInsertText(consoleplayer, "_ptd_pizzastyle_sync " .. luaOnly .. " " .. CV_PTBE.pizzastyle.value)
 	end
 end)
 
 
 CV_PTBE.oldmusic = CV_RegisterVar({
-	name = "bracpt_oldmusic",
+	name = "ptd_oldmusic",
 	defaultvalue = "off",
 	flags = CV_SAVE|CV_CALL,
 	PossibleValue = CV_OnOff, 

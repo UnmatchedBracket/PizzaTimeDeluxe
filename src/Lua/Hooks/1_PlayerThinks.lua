@@ -48,7 +48,7 @@ addHook("PlayerThink", function(player)
 end)
 
 addHook("ThinkFrame", do
-	local exitingCount, playerCount = BRAC_COUNT()
+	local exitingCount, playerCount = PTD_COUNT()
 	if PTBE.pizzatime then
 		PTBE.pizzatime_tics = $ + 1
 		if PTBE.timeleft and (exitingCount ~= playerCount) and CV_PTBE.timelimit.value then

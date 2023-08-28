@@ -15,4 +15,4 @@ dualrun:
 builddualrun: build dualrun
 
 releasebuild: build
-	cp build.pk3 L_PizzaTimeBracEdition-v$(shell read -p "Version (e.g. 1.2.1): " ver && echo $$ver).pk3
+	cp build.pk3 L_PizzaTimeDeluxe-v$(shell read -p "Version (e.g. 1.2.1): " ver && echo $$ver).pk3

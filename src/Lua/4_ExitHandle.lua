@@ -2,9 +2,9 @@
 -- Nothing really needed to be touched here (Maybe)
 
 addHook("ThinkFrame", function()
-	if gametype ~= GT_PIZZATIMEBRAC then return end
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	
-	local exitingCount, playerCount, pizzaCount = BRAC_COUNT()
+	local exitingCount, playerCount, pizzaCount = PTD_COUNT()
 	
 	-- better than the old code since it started a new iteration on every IF block.
 	

@@ -11,7 +11,7 @@
 	and stop their lap timer and spit out the lap timer when they touch the start
 */
 addHook("MobjLineCollide", function(mobj, line)
-    if gametype ~= GT_PIZZATIMEBRAC then return end
+    if gametype ~= GT_PIZZATIMEDELUXE then return end
 	local player = mobj.player
 	if player.spectator then return end -- no trolling.
 
