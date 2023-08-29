@@ -45,7 +45,12 @@ local bar_hud = function(v,player)
 		
 		--1/PTBE.timeleft
 		--PTBE.timeleft
-		
+
+		local pizzaface = v.cachePatch('PFCES1')
+		if animationtable['pizzaface'] // dont wanna risk anything yknow
+			pizzaface = v.cachePatch(animationtable['pizzaface'].display_name)
+		end
+
 		--ease.linear(fixed_t t, [[fixed_t start], fixed_t end])
 		if CV_PTBE.timelimit.value then
 
@@ -64,15 +69,16 @@ local bar_hud = function(v,player)
 			if PTBE.pizzatime_tics < expectedtime then 
 				--purple bar, +1 fracunit because i want it inside the box 
 				-- MAX VALUE FOR HSCALE: FRACUNIT*150
-				v.drawStretched(91*FRACUNIT, ese + (5*FU)/2, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
+				v.drawStretched(91*FRACUNIT, ese + (5*FU)/3, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
 				--brown overlay
 				v.drawScaled(90*FRACUNIT, ese, FU/2, bar, V_SNAPTOBOTTOM)
-				
+				v.drawScaled(230*FU, ese - (8*FU), FU/3, pizzaface, V_SNAPTOBOTTOM)
 				
 			-- after animation
 			else 
 				v.drawStretched(91*FRACUNIT, finish + (5*FU)/2, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
 				v.drawScaled(90*FRACUNIT, finish, FU/2, bar, V_SNAPTOBOTTOM)
+				v.drawScaled(230*FU, finish - (8*FU), FU/3, pizzaface, V_SNAPTOBOTTOM)
 				--v.drawString(int x, int y, string text, [int flags, [string align]])
 				if timeafteranimation then
 					local timestring = G_TicsToMTIME(PTBE.timeleft)
@@ -242,9 +248,9 @@ local rank_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if player.pizzaface then return end
 	if player.ptje_rank then
-		v.drawScaled(15*FRACUNIT,60*FRACUNIT,FRACUNIT/2, PTBE.r2p(v,player.ptje_rank), V_SNAPTOLEFT|V_SNAPTOTOP)
+		v.drawScaled(15*FRACUNIT,55*FRACUNIT,FRACUNIT/3, PTBE.r2p(v,player.ptje_rank), V_SNAPTOLEFT|V_SNAPTOTOP)
 		if player.timeshit then
-			v.drawScaled(15*FRACUNIT,60*FRACUNIT,FRACUNIT/2, PTBE.r2p(v, "BROKEN"), V_SNAPTOLEFT|V_SNAPTOTOP|V_MODULATE|V_50TRANS)
+			v.drawScaled(15*FRACUNIT,55*FRACUNIT,FRACUNIT/3, PTBE.r2p(v, "BROKEN"), V_SNAPTOLEFT|V_SNAPTOTOP|V_MODULATE|V_50TRANS)
 		end
 	end
 end

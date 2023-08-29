@@ -3,7 +3,7 @@ freeslot("sfx_pizzah", "sfx_coneba", "sfx_pepdie", "sfx_lap2")
 sfxinfo[sfx_pizzah].caption = "Pizzaface laughs"
 sfxinfo[sfx_coneba].caption = "Coneball laughs"
 sfxinfo[sfx_pepdie].caption = "Death"
-sfxinfo[sfx_lap2].caption = "Lap 2!"
+sfxinfo[sfx_lap2].caption = "New lap!"
 
 freeslot("MT_PILLARJOHN", "S_PILLARJOHN", "S_PILLARJOHN_PAIN", "SPR_PILJ")
 
@@ -70,6 +70,8 @@ rawset(_G, "PTBE", { -- variables
 	timeover = false,
 	
 	endsector = nil,
+	
+	showtime = false,
 	
 	hudstuff = {
 		anim = 0,
@@ -166,6 +168,7 @@ local function InitMap()
 	PTBE.pizzatime_tics = 0 
 	PTBE.timeleft = 0
 	PTBE.timeover = false
+	PTBE.showtime = false
 end
 
 local function InitMap2()
@@ -269,7 +272,8 @@ PTBE.PizzaTimeTrigger = function(mobj)
 			DiscordBot.Data.msgsrb2 = $ .. ":pizza: Pizza Time has started! Pizzas:\n"
 		end
 		PTBE.pizzatime = true
-		
+		PTAnimFunctions.NewAnimation('pizzaface', 'PFCES', 2, 11, true)
+
 		local thesign = P_SpawnMobj(0,0,0, MT_SIGN)
 		P_SetOrigin(thesign, PTBE.spawn_location.x*FRACUNIT, PTBE.spawn_location.y*FRACUNIT, PTBE.spawn_location.z*FRACUNIT)
 		thesign.angle = PTBE.spawn_location.angle

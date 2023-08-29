@@ -94,8 +94,16 @@ addHook("PlayerThink", function(player)
 			player.mo.momy = 0
 			player.mo.momz = 0
 			--player.pflags = $|PF_FULLSTASIS
-			if not player.stuntime and CV_PTBE.pizzalaugh.value and not player.pizzachargecooldown then -- once it hits zero, LAUGH AHHHHAHHAAHAHAHHAHAH
-				S_StartSound(player.mo, pfmaskData[player.PTBE_pizzastyle].sound)
+			if not player.stuntime then -- once it hits zero, LAUGH AHHHHAHHAAHAHAHHAHAH
+				if CV_PTBE.pizzalaugh.value and not player.pizzachargecooldown
+					S_StartSound(player.mo, pfmaskData[player.PTBE_pizzastyle].sound)
+				end
+
+				if not PTBE.showtime // hiiii adding onto this for showtime
+					PTBE.showtime = true
+					local anim = animationtable['pizzaface']
+					anim:ChangeAnimation('PFCEA', 3, 8, false)
+				end
 			elseif PTBE.pizzatime_tics < TICRATE*CV_PTBE.pizzatimestun.value+20 then
 				player.mo.momz = P_MobjFlip(player.mo)*-FU
 				if player.facechangecooldown then
