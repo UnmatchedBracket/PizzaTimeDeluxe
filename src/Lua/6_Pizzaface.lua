@@ -102,7 +102,7 @@ addHook("PlayerThink", function(player)
 				if not PTBE.showtime // hiiii adding onto this for showtime
 					PTBE.showtime = true
 					local anim = animationtable['pizzaface']
-					anim:ChangeAnimation('PFCEA', 3, 8, false)
+					anim:ChangeAnimation('PIZZAFACE_SHOWTIME', 3, 8, false)
 				end
 			elseif PTBE.pizzatime_tics < TICRATE*CV_PTBE.pizzatimestun.value+20 then
 				player.mo.momz = P_MobjFlip(player.mo)*-FU

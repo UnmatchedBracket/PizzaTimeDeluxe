@@ -19,7 +19,7 @@ end
 
 PTAnimFunctions.NewAnimation = function(tag, name, tps, totalframes, loop, startCallback, finishCallback)
 	if not (tag and name and tps and totalframes and loop) return end
-	if animationtable[tag] return end
+	if animationtable[tag] animationtable[tag] = nil end
 	local animation = {}
 
 	animation.name = name

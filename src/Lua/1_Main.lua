@@ -272,7 +272,7 @@ PTBE.PizzaTimeTrigger = function(mobj)
 			DiscordBot.Data.msgsrb2 = $ .. ":pizza: Pizza Time has started! Pizzas:\n"
 		end
 		PTBE.pizzatime = true
-		PTAnimFunctions.NewAnimation('pizzaface', 'PFCES', 2, 11, true)
+		PTAnimFunctions.NewAnimation('pizzaface', 'PIZZAFACE_SLEEPING', 2, 11, true)
 
 		local thesign = P_SpawnMobj(0,0,0, MT_SIGN)
 		P_SetOrigin(thesign, PTBE.spawn_location.x*FRACUNIT, PTBE.spawn_location.y*FRACUNIT, PTBE.spawn_location.z*FRACUNIT)

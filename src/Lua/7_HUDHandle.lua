@@ -39,14 +39,17 @@ local bar_hud = function(v,player)
 		
 		--for the fade in
 		local ese = ease.inoutcubic(( (FU) / (expectedtime) )*PTBE.pizzatime_tics, start, finish)
-		
+
+		local pfEase = min(max(PTBE.pizzatime_tics - CV_PTBE.pizzatimestun.value*TICRATE - 50, 0), 100)
+		pfEase = (pfEase*pfEase) * FU / 22
+
 		local bar = v.cachePatch("SHOWTIMEBAR") -- the orange border
 		local bar2 = v.cachePatch("SHOWTIMEBAR2") -- the purple thing
 		
 		--1/PTBE.timeleft
 		--PTBE.timeleft
 
-		local pizzaface = v.cachePatch('PFCES1')
+		local pizzaface = v.cachePatch('PIZZAFACE_SLEEPING1')
 		if animationtable['pizzaface'] // dont wanna risk anything yknow
 			pizzaface = v.cachePatch(animationtable['pizzaface'].display_name)
 		end
@@ -72,13 +75,13 @@ local bar_hud = function(v,player)
 				v.drawStretched(91*FRACUNIT, ese + (5*FU)/3, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
 				--brown overlay
 				v.drawScaled(90*FRACUNIT, ese, FU/2, bar, V_SNAPTOBOTTOM)
-				v.drawScaled(230*FU, ese - (8*FU), FU/3, pizzaface, V_SNAPTOBOTTOM)
+				v.drawScaled(230*FU, ese - (8*FU) + pfEase, FU/3, pizzaface, V_SNAPTOBOTTOM)
 				
 			-- after animation
 			else 
 				v.drawStretched(91*FRACUNIT, finish + (5*FU)/2, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
 				v.drawScaled(90*FRACUNIT, finish, FU/2, bar, V_SNAPTOBOTTOM)
-				v.drawScaled(230*FU, finish - (8*FU), FU/3, pizzaface, V_SNAPTOBOTTOM)
+				v.drawScaled(230*FU, finish - (8*FU) + pfEase, FU/3, pizzaface, V_SNAPTOBOTTOM)
 				--v.drawString(int x, int y, string text, [int flags, [string align]])
 				if timeafteranimation then
 					local timestring = G_TicsToMTIME(PTBE.timeleft)
