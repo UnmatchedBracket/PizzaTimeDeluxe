@@ -97,6 +97,7 @@ addHook("NetVars", function(net)
 		"pizzatime_tics",
 		"timeleft",
 		"timeover",
+		"showtime",
 		"endsector",
 		
 		"hudstuff",
@@ -215,7 +216,40 @@ local function InitMap2()
 	
 end
 
+PTBE.ReturnPizzaTimeMusic = function(p)
+	local song = mapmusname
+	local songdata = {}
 
+	songdata["It's Pizza Time!"] = 'PIZTIM'
+	songdata['The Death That I Deservioli'] = 'DEAOLI'
+	songdata["Pillar John's Revenge"] = 'PIJORE'
+	songdata["Extreme (OLD)"] = 'GLUWAY'
+	songdata["Extreme (NEW)"] = 'PALAVI'
+
+	local file = io.openlocal("client/PizzaTimeDeluxe_Music.txt", "r") // "thats not a json thats a txt" SHUT THE FUCK UP
+	local jsontxt = file:read('*a')
+	file:close()
+
+	local newsongdata = json.parse(jsontxt)
+
+	local songs = (newsongdata and newsongdata.songs) or songdata
+
+	if PTBE.pizzatime
+		song = "It's Pizza Time!"
+
+		if PTBE.laps == 2
+			song = "The Death That I Deservioli"
+		elseif PTBE.laps == 3
+			song = "Pillar John's Revenge"
+		elseif PTBE.laps >= 4
+			song = CV_PTBE.oldmusic.value and "Extreme (OLD)" or "Extreme (NEW)"
+		end
+	end
+
+	// modding check here
+
+	return songs[song]
+end
 
 -- doesnt actually trigger or increment lap, just tps you
 PTBE.LapTP = function(player, invincibility)
@@ -254,9 +288,7 @@ PTBE.StartNewLap = function(mobj)
 		if player.elfilin and player.mo.elfilin_portal then
 			player.mo.elfilin_portal.fuse = 1
 		end
-	
-
-		
+		S_ChangeMusic(PTBE.ReturnPizzaTimeMusic(), true)
 	else -- FAKE LAP -- 
 		mobj.player.stuntime = TICRATE*CV_PTBE.fakelapstun.value
 		P_SetOrigin(mobj, PTBE.end_location.x*FRACUNIT,PTBE.end_location.y*FRACUNIT, PTBE.end_location.z*FRACUNIT)
@@ -355,6 +387,8 @@ PTBE.PizzaTimeTrigger = function(mobj)
 			john.momy = -sin(john.angle)*8
 			john.momz = P_MobjFlip(john)*8*FU
 		end
+
+		S_ChangeMusic(PTBE.ReturnPizzaTimeMusic(), true)
 	end
 end
 

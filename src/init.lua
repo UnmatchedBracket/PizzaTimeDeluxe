@@ -1,3 +1,18 @@
+local pizzatimemusic = [[{
+    "songs": {
+        "It's Pizza Time!": "PIZTIM",
+        "The Death That I Deservioli": "DEAOLI",
+        "Pillar John's Revenge": "PIJORE",
+        "Extreme (OLD)": "GLUWAY",
+        "Extreme (NEW)": "PALAVI"
+    },
+    "musicmods": [
+		"musicmodpt.wad"
+	]
+}]]
+
+dofile "Libraries/json.lua"
+
 dofile "HUD Animation/0_Init.lua"
 dofile "HUD Animation/1_UpdatePerFrame.lua"
 
@@ -21,3 +36,23 @@ dofile "6_Pizzaface.lua"
 dofile "7_HUDHandle.lua"
 dofile "8_RandomEvents.lua"
 dofile "9_CustomDiscordLeaderboard.lua"
+
+//hi, nick here with some code for clientside music changing, enjoy gaming with custom music to your hearts content
+
+local file = io.openlocal('client/PizzaTimeDeluxe_Music.txt', 'r+')
+if not file
+	print('making file')
+	local writeitup = io.openlocal('client/PizzaTimeDeluxe_Music.txt', 'w+')
+	writeitup:write(pizzatimemusic)
+	file = writeitup
+
+	local shit = json.parse(pizzatimemusic)
+	for _,i in pairs(shit.musicmods)
+		COM_BufInsertText(consoleplayer, 'addfile '..i)
+	end
+else
+	local shit = json.parse(file:read('*a'))
+	for _,i in pairs(shit.musicmods)
+		COM_BufInsertText(consoleplayer, 'addfile '..i)
+	end
+end

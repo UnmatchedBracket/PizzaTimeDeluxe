@@ -31,5 +31,4 @@ PTAnimFunctions.DrawBar = function(v, tag, x, y, scale, length, flags, color)
 	local barOffset = (((-leveltime)%bar.width)+bar.width)%bar.width
 	local width = min(truelength, FixedMul(bar.width*FU, scale))
 	v.drawCropped(x, y, scale, scale, patch, flags or 0, color, barOffset, 0, width, bar.width*FU, bar.height*FU)
-	print(width/FU)
 end

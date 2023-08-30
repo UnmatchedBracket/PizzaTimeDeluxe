@@ -1,5 +1,14 @@
+addHook('MusicChange', function(oldname, newname, mflags, looping, position, prefadems, fadeinms)
+	if not PTBE.pizzatime return end
+	if newname ~= mapmusname return end
+
+	local name = PTBE.ReturnPizzaTimeMusic()
+	if oldname == name return true end
+	return name, mflags, looping, position, prefadems, fadeinms
+end)
+
 -- nothing needed to be changed here.
-addHook("ThinkFrame", function()
+/*addHook("ThinkFrame", function()
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if CV_PTBE.nomusic.value then return end
 	
@@ -33,4 +42,4 @@ addHook("ThinkFrame", function()
 			mapmusname = lap4
 		end
 	end
-end)
+end)*/
