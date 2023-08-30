@@ -54,6 +54,11 @@ local bar_hud = function(v,player)
 			pizzaface = v.cachePatch(animationtable['pizzaface'].display_name)
 		end
 
+		local john = v.cachePatch('JOHN1')
+		if animationtable['john']
+			john = v.cachePatch(animationtable['john'].display_name)
+		end
+
 		--ease.linear(fixed_t t, [[fixed_t start], fixed_t end])
 		if CV_PTBE.timelimit.value then
 
@@ -67,20 +72,26 @@ local bar_hud = function(v,player)
 			if themath < 0 then
 				themath = 0
 			end
-			
+
+			local johnscale = (FU/3) + (FU/4)
+
 			-- during animation
 			if PTBE.pizzatime_tics < expectedtime then 
 				--purple bar, +1 fracunit because i want it inside the box 
 				-- MAX VALUE FOR HSCALE: FRACUNIT*150
-				v.drawStretched(91*FRACUNIT, ese + (5*FU)/3, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
+				-- v.drawStretched(91*FRACUNIT, ese + (5*FU)/3, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
+				PTAnimFunctions.DrawBar(v, 'hi', 0, 0, (FU/2) - (FU/12), min(themath,bar_finish))
 				--brown overlay
 				v.drawScaled(90*FRACUNIT, ese, FU/2, bar, V_SNAPTOBOTTOM)
+				v.drawScaled((82*FU) + min(themath,bar_finish), ese + (1*FU), johnscale, john, V_SNAPTOBOTTOM)
 				v.drawScaled(230*FU, ese - (8*FU) + pfEase, FU/3, pizzaface, V_SNAPTOBOTTOM)
 				
 			-- after animation
 			else 
-				v.drawStretched(91*FRACUNIT, finish + (5*FU)/2, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
+				// v.drawStretched(91*FRACUNIT, finish + (5*FU)/2, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
+				PTAnimFunctions.DrawBar(v, 'hi', 0, 0, (FU/2) - (FU/12), min(themath,bar_finish))
 				v.drawScaled(90*FRACUNIT, finish, FU/2, bar, V_SNAPTOBOTTOM)
+				v.drawScaled((82*FU) + min(themath,bar_finish), finish + (1*FU), johnscale, john, V_SNAPTOBOTTOM)
 				v.drawScaled(230*FU, finish - (8*FU) + pfEase, FU/3, pizzaface, V_SNAPTOBOTTOM)
 				--v.drawString(int x, int y, string text, [int flags, [string align]])
 				if timeafteranimation then

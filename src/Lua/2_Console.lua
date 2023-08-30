@@ -38,6 +38,22 @@ COM_AddCommand("ptd_pizzatimenow", function(player)
 	PTBE.PizzaTimeTrigger(player.mo)
 end,1)
 
+// ADDED FOR TESTING PURPOSES
+
+CV_PTBE.x_positioning = CV_RegisterVar({
+	name = "ptd_x_positioning",
+	defaultvalue = "0",
+	flags = CV_NETVAR,
+	PossibleValue = CV_Unsigned
+})
+
+CV_PTBE.y_positioning = CV_RegisterVar({
+	name = "ptd_y_positioning",
+	defaultvalue = "0",
+	flags = CV_NETVAR,
+	PossibleValue = CV_Unsigned
+})
+
 CV_PTBE.forcelap = CV_RegisterVar({
 	name = "ptd_forcelap",
 	defaultvalue = "Off",

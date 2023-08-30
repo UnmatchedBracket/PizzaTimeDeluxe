@@ -1,6 +1,8 @@
 dofile "HUD Animation/0_Init.lua"
 dofile "HUD Animation/1_UpdatePerFrame.lua"
 
+dofile "Bar Animation Class/1_Init.lua"
+
 dofile "0_customhudlib.lua"
 
 dofile "1_Main.lua"

@@ -5,6 +5,7 @@ end)
 addHook('ThinkFrame', function()
 	// Animation Thinker
 	for _,self in pairs(animationtable)
+		if self.bar continue end
 		if not (leveltime % self.tps)
 			if self.frame < self.frames
 				self.frame = $+1
