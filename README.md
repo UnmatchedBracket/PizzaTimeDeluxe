@@ -1,5 +1,5 @@
 # Pizza Time Deluxe
-source code for the best multiplayer pizza time gamemode, which revolves around the classic "reach the end, run back" shenanigan from pizza tower, with a pvp twist.
+source code for the best multiplayer pizza time gamemode, which revolves around the classic "reach the end, run back" shenanigan from pizza tower, with a pvp and cooperative twist, as well as some things from pizza tower!
 
 # How to Compile
 
