@@ -46,12 +46,12 @@ if not file
 	writeitup:write(pizzatimemusic)
 	file = writeitup
 
-	local shit = json.parse(pizzatimemusic)
+	local shit = json.decode(pizzatimemusic)
 	for _,i in pairs(shit.musicmods)
 		COM_BufInsertText(consoleplayer, 'addfile '..i)
 	end
 else
-	local shit = json.parse(file:read('*a'))
+	local shit = json.decode(file:read('*a'))
 	for _,i in pairs(shit.musicmods)
 		COM_BufInsertText(consoleplayer, 'addfile '..i)
 	end

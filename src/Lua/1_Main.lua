@@ -230,7 +230,7 @@ PTBE.ReturnPizzaTimeMusic = function(p)
 	local jsontxt = file:read('*a')
 	file:close()
 
-	local newsongdata = json.parse(jsontxt)
+	local newsongdata = json.decode(jsontxt)
 
 	local songs = (newsongdata and newsongdata.songs) or songdata
 
