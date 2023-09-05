@@ -20,7 +20,7 @@ local hud_debug2 = CV_RegisterVar({
 	name = "hud_debug2",
 	defaultvalue = "0",
 	flags = CV_NETVAR,
-	PossibleValue = CV_Unsigned, 
+	PossibleValue = CV_Unsigned,
 })
 */
 -- LAPS AND PIZZATIME-MOVEUP HUD --

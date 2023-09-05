@@ -37,7 +37,7 @@ addHook("MobjLineCollide", function(mobj, line)
 				return
 			end
 			
-			local lapstring = "\x82\*LAP ".. PTBE.laps.. " ("..player.name.." "..G_TicsToMTIME(player.laptime, true)..")"
+			local lapstring = "\x82\*LAP ".. player.lapsdid.. " ("..player.name.." "..G_TicsToMTIME(player.laptime, true)..")"
 			P_DoPlayerExit(player)
 			
 			chatprint(lapstring, true)
