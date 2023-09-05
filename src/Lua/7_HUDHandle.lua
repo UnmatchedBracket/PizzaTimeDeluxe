@@ -26,13 +26,35 @@ local hud_debug2 = CV_RegisterVar({
 -- LAPS AND PIZZATIME-MOVEUP HUD --
 local timeafteranimation = 0
 
+local BARXOFF = 5*FU
+local BARYOFF = 5*FU
+local BARWIDTH = 295*FU
+local TIMEMODFAC = 4*BARWIDTH/FU
+local BARSECTIONWIDTH = 172*FU
+
+--[[@param v videolib]]
+local function drawBarFill(v, x, y, scale, progress)
+	local clampedProg = max(0, min(progress, FU))
+	local patch = v.cachePatch("BARFILL")
+	local drawwidth = FixedMul(clampedProg, BARWIDTH)
+	local barOffset = ((leveltime%TIMEMODFAC)*FU/4)%BARSECTIONWIDTH
+	--print(barOffset/FU)
+	v.drawCropped(
+		x+FixedMul(BARXOFF, scale), y+FixedMul(BARYOFF, scale), -- x, y
+		scale, scale, -- hscale, vscale
+		patch, V_SNAPTOBOTTOM, -- patch, flags
+		nil, -- colormap
+		barOffset, 0, -- sx, sy
+		drawwidth, patch.height*FU)
+end
+
 local bar_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if PTBE.pizzatime then
 		local expectedtime = TICRATE*3
 		local start = 300*FRACUNIT -- animation position start
 		local finish = 175*FRACUNIT -- animation position end
-		local bar_finish = 150*FRACUNIT
+		local bar_finish = 1475*FRACUNIT/10
 		local TLIM = CV_PTBE.timelimit.value*TICRATE*60 
 		-- "TLIM" is time limit number converted to seconds to minutes
 		--example, if CV_PTBE.timelimit.value is 4, it goes to 4*35 to 4*35*60 making it 4 minutes
@@ -64,34 +86,34 @@ local bar_hud = function(v,player)
 
 			
 			--for the bar length calculations
-			local themath = FixedMul(
-			FixedDiv(TLIM*FRACUNIT-PTBE.timeleft*FRACUNIT,(TLIM*FRACUNIT)),bar_finish
-			)
+			local progress = FixedDiv(TLIM*FRACUNIT-PTBE.timeleft*FRACUNIT, TLIM*FRACUNIT)
+			local johnx = FixedMul(progress, bar_finish)
 			
+
 			-- Fix negative errors?
-			if themath < 0 then
-				themath = 0
+			if johnx < 0 then
+				johnx = 0
 			end
 
-			local johnscale = (FU/3) + (FU/4)
+			local johnscale = (FU/2) -- + (FU/4)
 
 			-- during animation
 			if PTBE.pizzatime_tics < expectedtime then 
 				--purple bar, +1 fracunit because i want it inside the box 
 				-- MAX VALUE FOR HSCALE: FRACUNIT*150
 				-- v.drawStretched(91*FRACUNIT, ese + (5*FU)/3, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
-				PTAnimFunctions.DrawBar(v, 'hi', 0, 0, (FU/2) - (FU/12), min(themath,bar_finish))
+				drawBarFill(v, 90*FRACUNIT, ese, (FU/2), progress)
 				--brown overlay
 				v.drawScaled(90*FRACUNIT, ese, FU/2, bar, V_SNAPTOBOTTOM)
-				v.drawScaled((82*FU) + min(themath,bar_finish), ese + (1*FU), johnscale, john, V_SNAPTOBOTTOM)
+				v.drawScaled((82*FU) + min(johnx,bar_finish), ese + (6*johnscale), johnscale, john, V_SNAPTOBOTTOM)
 				v.drawScaled(230*FU, ese - (8*FU) + pfEase, FU/3, pizzaface, V_SNAPTOBOTTOM)
 				
 			-- after animation
 			else 
 				// v.drawStretched(91*FRACUNIT, finish + (5*FU)/2, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
-				PTAnimFunctions.DrawBar(v, 'hi', 0, 0, (FU/2) - (FU/12), min(themath,bar_finish))
+				drawBarFill(v, 90*FRACUNIT, finish, (FU/2), progress)
 				v.drawScaled(90*FRACUNIT, finish, FU/2, bar, V_SNAPTOBOTTOM)
-				v.drawScaled((82*FU) + min(themath,bar_finish), finish + (1*FU), johnscale, john, V_SNAPTOBOTTOM)
+				v.drawScaled((82*FU) + min(johnx,bar_finish), finish + (6*johnscale), johnscale, john, V_SNAPTOBOTTOM)
 				v.drawScaled(230*FU, finish - (8*FU) + pfEase, FU/3, pizzaface, V_SNAPTOBOTTOM)
 				--v.drawString(int x, int y, string text, [int flags, [string align]])
 				if timeafteranimation then

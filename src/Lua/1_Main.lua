@@ -223,8 +223,8 @@ PTBE.ReturnPizzaTimeMusic = function(p)
 	songdata["It's Pizza Time!"] = 'PIZTIM'
 	songdata['The Death That I Deservioli'] = 'DEAOLI'
 	songdata["Pillar John's Revenge"] = 'PIJORE'
-	songdata["Extreme (OLD)"] = 'GLUWAY'
-	songdata["Extreme (NEW)"] = 'PALAVI'
+	songdata["Gluten Getaway"] = 'GLUWAY'
+	songdata["Pasta La Vista"] = 'PASTVI'
 
 	local file = io.openlocal("client/PizzaTimeDeluxe_Music.txt", "r") // "thats not a json thats a txt" SHUT THE FUCK UP
 	local jsontxt = file:read('*a')
@@ -242,7 +242,7 @@ PTBE.ReturnPizzaTimeMusic = function(p)
 		elseif PTBE.laps == 3
 			song = "Pillar John's Revenge"
 		elseif PTBE.laps >= 4
-			song = CV_PTBE.oldmusic.value and "Extreme (OLD)" or "Extreme (NEW)"
+			song = CV_PTBE.oldmusic.value and "Gluten Getaway" or "Pasta La Vista"
 		end
 	end
 
@@ -304,7 +304,6 @@ PTBE.PizzaTimeTrigger = function(mobj)
 			DiscordBot.Data.msgsrb2 = $ .. ":pizza: Pizza Time has started! Pizzas:\n"
 		end
 		PTBE.pizzatime = true
-		PTAnimFunctions.NewBar('hi', 0, 0, 'BARFILL', 344, 29)
 		PTAnimFunctions.NewAnimation('pizzaface', 'PIZZAFACE_SLEEPING', 2, 11, true)
 		PTAnimFunctions.NewAnimation('john', 'JOHN', 2, 22, true)
 
