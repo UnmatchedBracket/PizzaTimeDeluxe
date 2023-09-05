@@ -45,8 +45,7 @@ addHook("MobjLineCollide", function(mobj, line)
 				PTBE.StartNewLap(mobj)
 			end
 
-			if player.lapsdid ~= nil  then
-				player.lapsdid = $ + 1
+			if player.lapsdid ~= nil then
 				P_AddPlayerScore(player, player.lapsdid*2500)
 			end
 			

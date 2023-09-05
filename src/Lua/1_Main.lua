@@ -1,44 +1,3 @@
-freeslot("sfx_pizzah", "sfx_coneba", "sfx_pepdie", "sfx_lap2")
-
-sfxinfo[sfx_pizzah].caption = "Pizzaface laughs"
-sfxinfo[sfx_coneba].caption = "Coneball laughs"
-sfxinfo[sfx_pepdie].caption = "Death"
-sfxinfo[sfx_lap2].caption = "New lap!"
-
-freeslot("MT_PILLARJOHN", "S_PILLARJOHN", "S_PILLARJOHN_PAIN", "SPR_PILJ")
-
-mobjinfo[MT_PILLARJOHN] = {
-	doomednum = -1,
-	spawnstate = S_PILLARJOHN,
-	spawnhealth = 1000,
-	deathstate = S_NULL,
-	radius = 16*FU,
-	height = 48*FU,
-	flags = MF_SCENERY
-}
-
-states[S_PILLARJOHN] = {
-    sprite = SPR_PILJ,
-    frame = FF_ANIMATE|A,
-    tics = -1,
-    var1 = L,
-    var2 = 3,
-    nextstate = S_PILLARJOHN
-}
-
-states[S_PILLARJOHN_PAIN] = {
-    sprite = SPR_PILJ,
-    frame = M,
-    tics = -1,
-    nextstate = S_PILLARJOHN_PAIN
-}
-
-
-customhud.SetupFont("PTFNT", -1, 4);
-
-rawset(_G, "FUNC_PTBE", {}) -- functions
-
-
 G_AddGametype({
     name = "Pizza Time Deluxe",
     identifier = "PIZZATIMEDELUXE",
@@ -49,8 +8,7 @@ G_AddGametype({
     description = "Run away from pizzaface, in style!"
 })
 
-
-
+local loaded_mods = false
 
 rawset(_G, "PTBE", { -- variables
 	spawn_location = 
@@ -213,10 +171,34 @@ local function InitMap2()
 	PTBE.dynamic_maxlaps = playercount*2
 	
 	PTBE.maxrankpoints = PTBE.GetRingCount()*1500
-	
+
+	local file = io.openlocal('client/PizzaTimeDeluxe_Music.txt', 'r+')
+	if not loaded_mods then
+		if not file then
+			local writeitup = io.openlocal('client/PizzaTimeDeluxe_Music.txt', 'w+')
+			if not writeitup then
+				CONS_Printf(consoleplayer, "[PTD] Opening client music config for writing failed")
+			else
+				writeitup:write(pizzatimemusic)
+				file = writeitup
+
+				local data = json.decode(pizzatimemusic)
+				for _,i in pairs(data.musicmods) do
+					COM_BufInsertText(consoleplayer, 'addfile '..i)
+				end
+			end
+		else
+			local data = json.decode(file:read('*a'))
+			for _,i in pairs(data.musicmods) do
+				COM_BufInsertText(consoleplayer, 'addfile '..i)
+			end
+		end
+		loaded_mods = true
+	end
 end
 
-PTBE.ReturnPizzaTimeMusic = function(p)
+PTBE.ReturnPizzaTimeMusic = function()
+
 	local song = mapmusname
 	local songdata = {}
 
@@ -237,11 +219,11 @@ PTBE.ReturnPizzaTimeMusic = function(p)
 	if PTBE.pizzatime
 		song = "It's Pizza Time!"
 
-		if PTBE.laps == 2
+		if consoleplayer.lapsdid == 2
 			song = "The Death That I Deservioli"
-		elseif PTBE.laps == 3
+		elseif consoleplayer.lapsdid == 3
 			song = "Pillar John's Revenge"
-		elseif PTBE.laps >= 4
+		elseif consoleplayer.lapsdid >= 4
 			song = CV_PTBE.oldmusic.value and "Gluten Getaway" or "Pasta La Vista"
 		end
 	end
@@ -270,9 +252,7 @@ PTBE.StartNewLap = function(mobj)
 	
 	if not player.pizzaface then
 		PTBE.LapTP(player, true)
-		
-		PTBE.laps = $ + 1
-		
+		//player.lapsdid = $+1
 
 		S_StartSound(nil, sfx_lap2, player)
 		
@@ -280,7 +260,10 @@ PTBE.StartNewLap = function(mobj)
 		player.laptime = 0
 		
 		
-		
+		player.lapsdid = $ + 1
+		if player.lapsdid > PTBE.laps
+			PTBE.laps = player.lapsdid
+		end
 
 		
 		-- Elfilin support
@@ -288,7 +271,7 @@ PTBE.StartNewLap = function(mobj)
 		if player.elfilin and player.mo.elfilin_portal then
 			player.mo.elfilin_portal.fuse = 1
 		end
-		S_ChangeMusic(PTBE.ReturnPizzaTimeMusic(), true)
+		S_ChangeMusic(PTBE.ReturnPizzaTimeMusic(mobj.player), true)
 	else -- FAKE LAP -- 
 		mobj.player.stuntime = TICRATE*CV_PTBE.fakelapstun.value
 		P_SetOrigin(mobj, PTBE.end_location.x*FRACUNIT,PTBE.end_location.y*FRACUNIT, PTBE.end_location.z*FRACUNIT)
@@ -387,7 +370,7 @@ PTBE.PizzaTimeTrigger = function(mobj)
 			john.momz = P_MobjFlip(john)*8*FU
 		end
 
-		S_ChangeMusic(PTBE.ReturnPizzaTimeMusic(), true)
+		S_ChangeMusic(PTBE.ReturnPizzaTimeMusic(mobj.player), true)
 	end
 end
 

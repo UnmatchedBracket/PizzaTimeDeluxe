@@ -33,7 +33,7 @@ local TIMEMODFAC = 4*BARWIDTH/FU
 local BARSECTIONWIDTH = 172*FU
 
 --[[@param v videolib]]
-local function drawBarFill(v, x, y, scale, progress)
+local function drawBarFill(v, x, y, scale, progress, color)
 	local clampedProg = max(0, min(progress, FU))
 	local patch = v.cachePatch("BARFILL")
 	local drawwidth = FixedMul(clampedProg, BARWIDTH)
@@ -96,13 +96,17 @@ local bar_hud = function(v,player)
 			end
 
 			local johnscale = (FU/2) -- + (FU/4)
+			local color = nil
+			if player and player.mo and player.mo.valid
+				color = player.mo.color
+			end
 
 			-- during animation
 			if PTBE.pizzatime_tics < expectedtime then 
 				--purple bar, +1 fracunit because i want it inside the box 
 				-- MAX VALUE FOR HSCALE: FRACUNIT*150
 				-- v.drawStretched(91*FRACUNIT, ese + (5*FU)/3, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
-				drawBarFill(v, 90*FRACUNIT, ese, (FU/2), progress)
+				drawBarFill(v, 90*FRACUNIT, ese+3*FU, (FU/2), progress, color)
 				--brown overlay
 				v.drawScaled(90*FRACUNIT, ese, FU/2, bar, V_SNAPTOBOTTOM)
 				v.drawScaled((82*FU) + min(johnx,bar_finish), ese + (6*johnscale), johnscale, john, V_SNAPTOBOTTOM)
@@ -111,7 +115,7 @@ local bar_hud = function(v,player)
 			-- after animation
 			else 
 				// v.drawStretched(91*FRACUNIT, finish + (5*FU)/2, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
-				drawBarFill(v, 90*FRACUNIT, finish, (FU/2), progress)
+				drawBarFill(v, 90*FRACUNIT, finish+3*FU, (FU/2), progress, color)
 				v.drawScaled(90*FRACUNIT, finish, FU/2, bar, V_SNAPTOBOTTOM)
 				v.drawScaled((82*FU) + min(johnx,bar_finish), finish + (6*johnscale), johnscale, john, V_SNAPTOBOTTOM)
 				v.drawScaled(230*FU, finish - (8*FU) + pfEase, FU/3, pizzaface, V_SNAPTOBOTTOM)
