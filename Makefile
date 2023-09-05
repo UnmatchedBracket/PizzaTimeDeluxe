@@ -1,7 +1,7 @@
 .PHONY: build run buildrun dualrun builddualrun releasebuild
 
 build:
-	rm -f ../build.pk3
+	rm -f build.pk3
 	cd src; zip -r9 ../build.pk3 *
 
 run:
