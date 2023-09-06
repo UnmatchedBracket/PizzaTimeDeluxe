@@ -14,16 +14,13 @@ local function registerIt(successValue)
 				local pname = string.gsub(player.name, "`", "")
 				local ping = 0
 				local statms = ''
-				local iconskin = ':unknown:'
+				local iconskin = ":"..skins[player.skin].name..":"
 				local admin = ':black_small_square:'
 				if player.cmd.latency then ping = player.cmd.latency * 13 end
 				if (ping < 32) then statms = ':ping_blue:'
 				elseif (ping < 64) then statms = ':ping_green:'
 				elseif (ping < 128) then statms = ':ping_yellow:'
 				elseif (ping < 256) then statms = ':ping_red:' end
-				if player.mo and player.spectator != true
-					iconskin = ":"..player.mo.skin..":"
-				end
 				local rank = ':unknown:'
 				if player.pizzaface and leveltime then
 					rank = pfmaskData[player.PTBE_pizzastyle or 1].emoji or ":pizza:"
