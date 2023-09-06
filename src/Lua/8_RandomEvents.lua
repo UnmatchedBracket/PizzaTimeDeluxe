@@ -78,6 +78,10 @@ end)
 
 --[[@param p player_t]]
 addHook("PlayerThink", function (p)
+	if p.ptd_wasmini then
+		p.mo.scale = FU
+		p.ptd_wasmini = false
+	end
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if not PTBE.currentEvent then return end
 	if p.pstate == PST_DEAD or p.spectator or not p.realmo then return end
@@ -91,6 +95,7 @@ addHook("PlayerThink", function (p)
 		if p.pizzaface then
 			p.mo.scale = $ * 2
 		end
+		p.ptd_wasmini = true
 	end
 end)
 

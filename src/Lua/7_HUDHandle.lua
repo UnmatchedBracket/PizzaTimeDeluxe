@@ -305,7 +305,7 @@ local event_hud = function(v,player)
 		v.drawString(160, 120, "go nuts", 0, "center")
 	end
 	if event.name == "mini" then
-		v.drawNameTag(160,  80, "MINI MUSHROOM", V_CENTERNAMETAG, SKINCOLOR_GOLD, SKINCOLOR_RUST)
+		v.drawNameTag(160,  80, "MINI MUSHROOM", V_CENTERNAMETAG, SKINCOLOR_BLUE, SKINCOLOR_WHITE)
 		v.drawString(160, 120, "have fun being small", 0, "center")
 	end
 end
