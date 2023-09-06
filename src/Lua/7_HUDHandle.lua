@@ -29,16 +29,15 @@ local timeafteranimation = 0
 local BARXOFF = 5*FU
 local BARYOFF = 5*FU
 local BARWIDTH = 295*FU
-local TIMEMODFAC = 4*BARWIDTH/FU
 local BARSECTIONWIDTH = 172*FU
+local TIMEMODFAC = 4*BARSECTIONWIDTH/FU
 
 --[[@param v videolib]]
-local function drawBarFill(v, x, y, scale, progress, color)
+local function drawBarFill(v, x, y, scale, progress)
 	local clampedProg = max(0, min(progress, FU))
 	local patch = v.cachePatch("BARFILL")
 	local drawwidth = FixedMul(clampedProg, BARWIDTH)
 	local barOffset = ((leveltime%TIMEMODFAC)*FU/4)%BARSECTIONWIDTH
-	--print(barOffset/FU)
 	v.drawCropped(
 		x+FixedMul(BARXOFF, scale), y+FixedMul(BARYOFF, scale), -- x, y
 		scale, scale, -- hscale, vscale
@@ -96,17 +95,13 @@ local bar_hud = function(v,player)
 			end
 
 			local johnscale = (FU/2) -- + (FU/4)
-			local color = nil
-			if player and player.mo and player.mo.valid
-				color = player.mo.color
-			end
 
 			-- during animation
 			if PTBE.pizzatime_tics < expectedtime then 
 				--purple bar, +1 fracunit because i want it inside the box 
 				-- MAX VALUE FOR HSCALE: FRACUNIT*150
 				-- v.drawStretched(91*FRACUNIT, ese + (5*FU)/3, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
-				drawBarFill(v, 90*FRACUNIT, ese+3*FU, (FU/2), progress, color)
+				drawBarFill(v, 90*FRACUNIT, ese, (FU/2), progress)
 				--brown overlay
 				v.drawScaled(90*FRACUNIT, ese, FU/2, bar, V_SNAPTOBOTTOM)
 				v.drawScaled((82*FU) + min(johnx,bar_finish), ese + (6*johnscale), johnscale, john, V_SNAPTOBOTTOM)
@@ -115,7 +110,7 @@ local bar_hud = function(v,player)
 			-- after animation
 			else 
 				// v.drawStretched(91*FRACUNIT, finish + (5*FU)/2, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
-				drawBarFill(v, 90*FRACUNIT, finish+3*FU, (FU/2), progress, color)
+				drawBarFill(v, 90*FRACUNIT, finish, (FU/2), progress)
 				v.drawScaled(90*FRACUNIT, finish, FU/2, bar, V_SNAPTOBOTTOM)
 				v.drawScaled((82*FU) + min(johnx,bar_finish), finish + (6*johnscale), johnscale, john, V_SNAPTOBOTTOM)
 				v.drawScaled(230*FU, finish - (8*FU) + pfEase, FU/3, pizzaface, V_SNAPTOBOTTOM)
@@ -299,11 +294,15 @@ local event_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if not PTBE.currentEvent then return end
 	local event = PTBE.currentEvent
-	if leveltime > TICRATE*3 then return end
+	if leveltime > TICRATE*5 then return end
 	if event.name == "mirrorPrelude" then
-		v.drawString(160,  80, "magic mirror next round lol", 0, "center")
+		v.drawNameTag(160,  80, "MAGIC MIRROR NEXT ROUND", V_CENTERNAMETAG, SKINCOLOR_ICY, SKINCOLOR_AQUA)
 		v.drawString(160, 120, "everyone will be forced to use", 0, "center")
 		v.drawString(160, 130, "the skin of the highest scoring player", 0, "center")
+	end
+	if event.name == "super" then
+		v.drawNameTag(160,  80, "EVERYONE SUPER", V_CENTERNAMETAG, SKINCOLOR_GOLD, SKINCOLOR_RUST)
+		v.drawString(160, 120, "go nuts", 0, "center")
 	end
 end
 
