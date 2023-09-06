@@ -82,18 +82,20 @@ addHook("PlayerThink", function(player)
 		
 		
 		if not (leveltime % 3) and player.pizzamask and player.pizzamask.valid and player.speed > FRACUNIT then
-
-			local ghost = P_SpawnGhostMobj(player.pizzamask)
-			P_SetOrigin(ghost, player.pizzamask.x, player.pizzamask.y, player.pizzamask.z)
-			ghost.fuse = 11
-			ghost.colorized = true
-			local colors = pfmaskData[player.PTBE_pizzastyle].trails
-			if player.redgreen then
-				ghost.color = colors[1]
-			else
-				ghost.color = colors[2]
+			if (player ~= displayplayer) or (camera.chase and player == displayplayer) then
+				local colors = pfmaskData[player.PTBE_pizzastyle].trails
+				local ghost = P_SpawnGhostMobj(player.pizzamask)
+				P_SetOrigin(ghost, player.pizzamask.x, player.pizzamask.y, player.pizzamask.z)
+				ghost.fuse = 11
+				ghost.colorized = true
+				
+				if player.redgreen then
+					ghost.color = colors[1]
+				else
+					ghost.color = colors[2]
+				end
+				ghost.frame = $|FF_TRANS10|FF_FULLBRIGHT
 			end
-			ghost.frame = $|FF_TRANS10|FF_FULLBRIGHT
 			player.redgreen = not player.redgreen
 		end
 		if player.exiting or PTBE.quitting then
