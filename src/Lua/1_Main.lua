@@ -203,7 +203,7 @@ PTBE.ReturnPizzaTimeMusic = function()
 	local songdata = {}
 
 	songdata["It's Pizza Time!"] = 'PIZTIM'
-	songdata['The Death That I Deservioli'] = 'DEAOLI'
+	songdata["The Death That I Deservioli"] = 'DEAOLI'
 	songdata["Pillar John's Revenge"] = 'PIJORE'
 	songdata["Gluten Getaway"] = 'GLUWAY'
 	songdata["Pasta La Vista"] = 'PASTVI'
@@ -216,21 +216,21 @@ PTBE.ReturnPizzaTimeMusic = function()
 
 	local songs = (newsongdata and newsongdata.songs) or songdata
 
-	if PTBE.pizzatime
+	if PTBE.pizzatime then
 		song = "It's Pizza Time!"
 
-		if consoleplayer.lapsdid == 2
+		if consoleplayer.lapsdid == 2 then
 			song = "The Death That I Deservioli"
-		elseif consoleplayer.lapsdid == 3
+		elseif consoleplayer.lapsdid == 3 then
 			song = "Pillar John's Revenge"
-		elseif consoleplayer.lapsdid >= 4
+		elseif consoleplayer.lapsdid >= 4 then
 			song = CV_PTBE.oldmusic.value and "Gluten Getaway" or "Pasta La Vista"
 		end
 	end
 
 	// modding check here
 
-	return songs[song]
+	return songs[song] or songdata[song]
 end
 
 -- doesnt actually trigger or increment lap, just tps you
