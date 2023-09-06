@@ -23,12 +23,20 @@ addHook("MapLoad", function ()
 				end
 				CV_Set(CV_FindVar("forceskin"), PTBE.currentEvent.skin)
 			end
+		else
+			PTBE.currentEvent = nil
 		end
 	else
-		if P_RandomChance(FRACUNIT/10) then
-			PTBE.currentEvent = {name = "mirrorPrelude"}
+		if P_RandomChance(FRACUNIT/25) then
+			PTBE.currentEvent = {name = ({"mirrorPrelude", "super", "mini"})[P_RandomRange(1,3)]}
 			if DiscordBot then
-				DiscordBot.Data.msgsrb2 = $ .. ":mirror: The Chaos Mirror glows...\nThe highest scoring player this round will force their character upon all next round!\n"
+				if PTBE.currentEvent.name == "mirrorPrelude" then
+					DiscordBot.Data.msgsrb2 = $ .. ":mirror: The Chaos Mirror glows...\nThe highest scoring player this round will force their character upon all next round!\n"
+				elseif PTBE.currentEvent.name == "super" then
+					DiscordBot.Data.msgsrb2 = $ .. ":superhero: Everyone is super now!\n"
+				elseif PTBE.currentEvent.name == "super" then
+					DiscordBot.Data.msgsrb2 = $ .. ":small_red_triangle_down: Everyone is mini now!\n"
+				end
 			end
 		end
 	end
@@ -40,6 +48,7 @@ addHook("MapLoad", function ()
 end)
 
 addHook("IntermissionThinker", function ()
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if PTBE.currentEvent then
 		local event = PTBE.currentEvent
 		if event.name == "mirrorPrelude" then
@@ -56,7 +65,7 @@ addHook("IntermissionThinker", function ()
 			if maxplayer then
 				PTBE.currentEvent = {name = "mirror", skin = maxplayer.skin, activated = false}
 			else
-				PTBE.currentEvent = {name = "mirrorBroken"}
+				PTBE.currentEvent = nil
 			end
 		elseif event.name == "mirror" and event.activated then
 			CV_Set(CV_FindVar("forceskin"), -1)
@@ -67,6 +76,29 @@ addHook("IntermissionThinker", function ()
 	end
 end)
 
+--[[@param p player_t]]
+addHook("PlayerThink", function (p)
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if not PTBE.currentEvent then return end
+	if p.pstate == PST_DEAD or p.spectator or not p.realmo then return end
+	if PTBE.currentEvent.name == "super" then
+		p.rings = 9999
+		if not p.powers[pw_super] and not p.exiting then p.powers[pw_super] = 2 end
+		p.charflags = $ | SF_SUPER
+	end
+	if PTBE.currentEvent.name == "mini" then
+		p.mo.scale = FU/3
+		if p.pizzaface then
+			p.mo.scale = $ * 2
+		end
+	end
+end)
+
 addHook("ThinkFrame", function ()
-	
+	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if PTBE.currentEvent and PTBE.currentEvent.name == "super" then
+		emeralds = 127
+	else
+		emeralds = 0
+	end
 end)
