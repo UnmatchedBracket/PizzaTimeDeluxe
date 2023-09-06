@@ -27,7 +27,7 @@ addHook("MapLoad", function ()
 			PTBE.currentEvent = nil
 		end
 	else
-		if P_RandomChance(FRACUNIT/25) then
+		if P_RandomChance(FRACUNIT/16) then
 			PTBE.currentEvent = {name = ({"mirrorPrelude", "super", "mini"})[P_RandomRange(1,3)]}
 			if DiscordBot then
 				if PTBE.currentEvent.name == "mirrorPrelude" then
