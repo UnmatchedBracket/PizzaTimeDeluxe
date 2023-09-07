@@ -209,10 +209,14 @@ PTBE.ReturnPizzaTimeMusic = function()
 	songdata["Pasta La Vista"] = 'PASTVI'
 
 	local file = io.openlocal("client/PizzaTimeDeluxe_Music.txt", "r") // "thats not a json thats a txt" SHUT THE FUCK UP
-	local jsontxt = file:read('*a')
-	file:close()
-
-	local newsongdata = json.decode(jsontxt)
+	local newsongdata = 0
+	
+	//only read the file if it exists -luigi budd
+	if file
+		local jsontxt = file:read('*a')
+		file:close()
+		newsongdata = json.decode(jsontxt)
+	end
 
 	local songs = (newsongdata and newsongdata.songs) or songdata
 
