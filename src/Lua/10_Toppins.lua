@@ -56,14 +56,27 @@ addHook("PlayerThink", function (p)
         origin = origin.toppintrail
         trailCount = $ + trailDelay
     end
-    print("trail " .. trailCount)
+    CONS_Printf(p, "you have " .. trailCount/trailDelay .. " toppins")
     if not p.mo.movetrail then
         p.mo.movetrail = {}
     end
-    table.insert(p.mo.movetrail, {p.mo.x, p.mo.y, p.mo.z}, 1)
+    --print("trail2 " .. #p.mo.movetrail)
+    if
+        p.speed > FU
+        and (
+            not #p.mo.movetrail
+            or P_AproxDistance(P_AproxDistance(p.mo.x-p.mo.movetrail[1][1], p.mo.y-p.mo.movetrail[1][2]),
+                               p.mo.z-p.mo.movetrail[1][3]) > FU*4
+        )
+    then
+        table.insert(p.mo.movetrail, 1, {p.mo.x, p.mo.y, p.mo.z})
+    end
+    --print("trail3 " .. #p.mo.movetrail)
     while #p.mo.movetrail > trailCount do
+        --print("trail3.5 " .. #p.mo.movetrail .. ">" .. trailCount)
         table.remove(p.mo.movetrail)
     end
+    --print("trail4 " .. #p.mo.movetrail)
 end)
 
 addHook("TouchSpecial", function (special, toucher)
@@ -72,7 +85,7 @@ addHook("TouchSpecial", function (special, toucher)
         special.toppinType = toppinNum
         local trailNum = 1
         if toucher.toppintrail then
-            local origin = toucher.toppintrail
+            local origin = toucher
             while origin.toppintrail do
                 origin = origin.toppintrail
                 trailNum = $ + 1
@@ -96,6 +109,9 @@ local keepAway = 64*FU
 addHook("MobjThinker", function (mo)
     if not mo.toppinType then return end -- prob not released
     local toppinInfo = toppinTypes[mo.toppinType]
+    mo.momx = 0
+    mo.momy = 0
+    mo.momz = 0
     if mo.state == toppinInfo.free then return end --finish the anim first
     -- follow
     -- later maybe keep track of the player's past positions?
@@ -116,7 +132,9 @@ addHook("MobjThinker", function (mo)
         end
     end*/
     local trailList = mo.trueorigin.movetrail
-    print(trailDelay*mo.numInTrail, #trailList)
+    --print(mo.numInTrail .. " -- " .. min(trailDelay*mo.numInTrail, #trailList))
     local pos = trailList[min(trailDelay*mo.numInTrail, #trailList)]
-    P_MoveOrigin(mo, unpack(pos))
+    if pos then
+        P_MoveOrigin(mo, unpack(pos))
+    end
 end, MT_TOPPIN)
