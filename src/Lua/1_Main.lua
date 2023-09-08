@@ -140,6 +140,19 @@ local function InitMap2()
             PTBE.spawn_location.z = map.z
             PTBE.spawn_location.angle = map.angle
         end
+
+        if map.type == 322 then -- emblem - make a toppin
+			local toppin = P_SpawnMobj(
+				map.x*FU, 
+				map.y*FU, 
+				map.z*FU,
+				MT_TOPPIN
+			)
+			toppin.angle = map.angle*ANG1
+			if map.options & MTF_OBJECTFLIP then
+				toppin.flags2 = $ | MF2_OBJECTFLIP
+			end
+		end
 		
         if map.type == 501 then
             PTBE.end_location.x = map.x
