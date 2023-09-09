@@ -200,6 +200,12 @@ CV_PTBE.screams = CV_RegisterVar({
 	PossibleValue = CV_OnOff, 
 })
 
+CV_PTBE.custom_music = CV_RegisterVar({
+	name = "ptd_custom_music",
+	defaultvalue = "on",
+	flags = CV_SAVE,
+	PossibleValue = CV_OnOff, 
+})
 
 CV_PTBE.pizzamask = CV_RegisterVar({
 	name = "ptd_pizzamask",

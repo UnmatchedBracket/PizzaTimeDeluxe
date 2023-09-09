@@ -212,7 +212,7 @@ PTBE.ReturnPizzaTimeMusic = function()
 	local newsongdata = 0
 	
 	//only read the file if it exists -luigi budd
-	if file
+	if file and CV_PTBE.custom_music.value
 		local jsontxt = file:read('*a')
 		file:close()
 		newsongdata = json.decode(jsontxt)
