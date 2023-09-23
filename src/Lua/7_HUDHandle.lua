@@ -254,6 +254,19 @@ local tooltips_hud = function(v,player)
 	end
 end
 
+//taykis stuff
+local function dorandom(v)
+	local r = v.RandomRange(0,1)
+	if r == 0
+		r = -1
+	end
+	return r
+end
+local function getdec(v,random)
+	local r = v.RandomByte() * 256 * random
+	return r
+end
+
 local lap_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if not player.laptime then return end
@@ -262,19 +275,34 @@ local lap_hud = function(v,player)
 	local lap2flag = v.cachePatch("LAP2FLAG")
 	local hudst = player["PT@hudstuff"]
 	
+	//shaky effect just like in pt -luigi budd
+	local random = dorandom(v)
+	local shakex = FixedMul(getdec(v,random),3*FU/4)
+	random = dorandom(v)
+	local shakey = FixedMul(getdec(v,random),3*FU/4)
+
 	local cz = {
 		x = 120*FU,
 		start = -100*FU, 
 		finish = 10*FU,
 	}
-	
+
 	cz.y = ease.linear(FixedDiv(hudst.anim*FRACUNIT, 45*FRACUNIT), cz.start, cz.finish)
 
 	if cz.y ~= nil and hudst.anim_active then
 		if player.lapsdid == 2
-			v.drawScaled(cz.x,cz.y,FRACUNIT/3, lap2flag, V_SNAPTOTOP)
+			v.drawScaled(cz.x+shakex,cz.y+shakey,FRACUNIT/3, lap2flag, V_SNAPTOTOP)
 		elseif player.lapsdid > 2 then
-			v.drawLevelTitle(cz.x/FU,cz.y/FU, "LAP "..player.lapsdid, V_SNAPTOTOP|V_YELLOWMAP)
+			drawSuperText(v,cz.x+shakex,cz.y+shakey,
+				"LAP "..player.lapsdid,
+				{
+					font = "LTFNT",
+					flags = V_SNAPTOTOP,
+					align = "center",
+					scale = FU,
+					fixed = true,
+				}
+			)
 		end
 	end
 end
