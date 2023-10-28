@@ -10,23 +10,23 @@ addHook("ThinkFrame", function()
 	
 	for player in players.iterate() do
 		if leveltime then -- just a safety check
-			if (CV_PTBE.lappingtype.value == 2) and (player.lapsdid > CV_PTBE.maxlaps_perplayer.value) then
+			if (CV_PTD.lappingtype.value == 2) and (player.lapsdid > CV_PTD.maxlaps_perplayer.value) then
 				P_DoPlayerExit(player)
-			elseif ((playerCount > 1) and not (pizzaCount) and PTBE.pizzatime) or (exitingCount == playerCount) then
+			elseif ((playerCount > 1) and not (pizzaCount) and PTD.pizzatime) or (exitingCount == playerCount) then
 				if player.valid and not (player.exiting)
 					P_DoPlayerExit(player)
 				end
 				--print(2)
-			elseif (CV_PTBE.maxlaps.value and PTBE.laps > CV_PTBE.maxlaps.value and not CV_PTBE.dynamiclaps.value) or PTBE.quitting 
-			or (PTBE.dynamic_maxlaps and PTBE.laps > PTBE.dynamic_maxlaps and CV_PTBE.dynamiclaps.value) 
-			and not ((CV_PTBE.lappingtype.value == 2) and (player.lapsdid > CV_PTBE.maxlaps_perplayer.value)) then
+			elseif (CV_PTD.maxlaps.value and PTD.laps > CV_PTD.maxlaps.value and not CV_PTD.dynamiclaps.value) or PTD.quitting 
+			or (PTD.dynamic_maxlaps and PTD.laps > PTD.dynamic_maxlaps and CV_PTD.dynamiclaps.value) 
+			and not ((CV_PTD.lappingtype.value == 2) and (player.lapsdid > CV_PTD.maxlaps_perplayer.value)) then
 				if player.valid and not (player.exiting)
 					P_DoPlayerExit(player)
-					PTBE.quitting = true
+					PTD.quitting = true
 				end
 				--print(3)
 			else
-				if player.valid and (player.pizzaface or player.spectator) and not ( (CV_PTBE.lappingtype.value == 2) and (player.lapsdid > CV_PTBE.maxlaps_perplayer.value) ) then
+				if player.valid and (player.pizzaface or player.spectator) and not ( (CV_PTD.lappingtype.value == 2) and (player.lapsdid > CV_PTD.maxlaps_perplayer.value) ) then
 					player.exiting = 0
 				end
 				--print(4)

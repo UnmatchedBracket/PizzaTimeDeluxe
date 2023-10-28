@@ -1,4 +1,4 @@
-rawset(_G, "CV_PTBE", {}) -- for console vars
+rawset(_G, "CV_PTD", {}) -- for console vars
 
 COM_AddCommand("ptd_makepizza", function(player, arg)
 	if gametype ~= GT_PIZZATIMEDELUXE then
@@ -22,7 +22,7 @@ COM_AddCommand("ptd_makepizza", function(player, arg)
 			if DiscordBot then
 				DiscordBot.Data.msgsrb2 = $ .. "[" .. chosen_player .. "] **" .. players[chosen_player].name .. "** has magically become a pizza!\n"
 			end
-			PTBE_add_announcement(5*TICRATE,"\x85*"..targetplayer.name.." has become a pizza!")
+			PTD_add_announcement(5*TICRATE,"\x85*"..targetplayer.name.." has become a pizza!")
 		end
 	else
 		CONS_Printf(player, "Player does not exist")
@@ -35,165 +35,165 @@ COM_AddCommand("ptd_pizzatimenow", function(player)
 		CONS_Printf(player, "Command must be ran in the Pizza Time Deluxe mode.")
 		return
 	end
-	PTBE.PizzaTimeTrigger(player.mo)
+	PTD.PizzaTimeTrigger(player.mo)
 end,1)
 
 // ADDED FOR TESTING PURPOSES
 
-CV_PTBE.x_positioning = CV_RegisterVar({
+CV_PTD.x_positioning = CV_RegisterVar({
 	name = "ptd_x_positioning",
 	defaultvalue = "0",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned
 })
 
-CV_PTBE.y_positioning = CV_RegisterVar({
+CV_PTD.y_positioning = CV_RegisterVar({
 	name = "ptd_y_positioning",
 	defaultvalue = "0",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned
 })
 
-CV_PTBE.forcelap = CV_RegisterVar({
+CV_PTD.forcelap = CV_RegisterVar({
 	name = "ptd_forcelap",
 	defaultvalue = "Off",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
-CV_PTBE.maxlaps = CV_RegisterVar({
+CV_PTD.maxlaps = CV_RegisterVar({
 	name = "ptd_maxlaps",
 	defaultvalue = "16",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
-CV_PTBE.maxlaps_perplayer = CV_RegisterVar({
+CV_PTD.maxlaps_perplayer = CV_RegisterVar({
 	name = "ptd_maxlaps_perplayer",
 	defaultvalue = "5",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
-CV_PTBE.lappingtype = CV_RegisterVar({
+CV_PTD.lappingtype = CV_RegisterVar({
 	name = "ptd_lappingtype",
 	defaultvalue = "2",
 	flags = CV_NETVAR,
 	PossibleValue = {shared = 1, perplayer = 2}, 
 })
 
-CV_PTBE.pizzatimestun = CV_RegisterVar({
+CV_PTD.pizzatimestun = CV_RegisterVar({
 	name = "ptd_pizzatimestun",
 	defaultvalue = "10",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
-CV_PTBE.fakelapstun = CV_RegisterVar({
+CV_PTD.fakelapstun = CV_RegisterVar({
 	name = "ptd_fakelapstun",
 	defaultvalue = "3",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
-CV_PTBE.tpinv = CV_RegisterVar({
+CV_PTD.tpinv = CV_RegisterVar({
 	name = "ptd_tpinv",
 	defaultvalue = "3", -- IN SECONDS
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
-CV_PTBE.dynamiclaps = CV_RegisterVar({
+CV_PTD.dynamiclaps = CV_RegisterVar({
 	name = "ptd_dynamiclaps",
 	defaultvalue = "Off",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
-CV_PTBE.showdeaths = CV_RegisterVar({
+CV_PTD.showdeaths = CV_RegisterVar({
 	name = "ptd_showdeaths",
 	defaultvalue = "On",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
-CV_PTBE.pizzalaugh = CV_RegisterVar({ -- Whenever the pizzaface laugh plays when pizzatime starts.
+CV_PTD.pizzalaugh = CV_RegisterVar({ -- Whenever the pizzaface laugh plays when pizzatime starts.
 	name = "ptd_pizzalaugh",
 	defaultvalue = "On",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
-CV_PTBE.homework = CV_RegisterVar({
+CV_PTD.homework = CV_RegisterVar({
 	name = "ptd_homework",
 	defaultvalue = "Off",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
-CV_PTBE.collisionsystem = CV_RegisterVar({
+CV_PTD.collisionsystem = CV_RegisterVar({
 	name = "ptd_collisionsystem",
 	defaultvalue = "1",
 	flags = CV_NETVAR,
 	PossibleValue = {line = 1},  -- , locationcheck = 2
 })
 
-CV_PTBE.timelimit = CV_RegisterVar({
+CV_PTD.timelimit = CV_RegisterVar({
 	name = "ptd_timelimit",
 	defaultvalue = "4", -- in minutes
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
-CV_PTBE.pizzachoosetype = CV_RegisterVar({
+CV_PTD.pizzachoosetype = CV_RegisterVar({
 	name = "ptd_pizzachoosetype",
 	defaultvalue = "3",
 	flags = CV_NETVAR,
 	PossibleValue = {firsttrigger = 1, random = 2, allbutfirst = 3}, 
 })
 
-CV_PTBE.pizzacount = CV_RegisterVar({
+CV_PTD.pizzacount = CV_RegisterVar({
 	name = "ptd_pizzacount",
 	defaultvalue = "1",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Natural, 
 })
 
-CV_PTBE.pizzatpcooldown = CV_RegisterVar({
+CV_PTD.pizzatpcooldown = CV_RegisterVar({
 	name = "ptd_pizzatpcooldown",
 	defaultvalue = "5",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
-CV_PTBE.pizzatpstuntime = CV_RegisterVar({
+CV_PTD.pizzatpstuntime = CV_RegisterVar({
 	name = "ptd_pizzatpstuntime",
 	defaultvalue = "2",
 	flags = CV_NETVAR,
 	PossibleValue = CV_Unsigned, 
 })
 
-CV_PTBE.nomusic = CV_RegisterVar({
+CV_PTD.nomusic = CV_RegisterVar({
 	name = "ptd_nomusic",
 	defaultvalue = "off",
 	PossibleValue = CV_OnOff, 
 })
 
-CV_PTBE.scoreonkill = CV_RegisterVar({
+CV_PTD.scoreonkill = CV_RegisterVar({
 	name = "ptd_scoreonkill",
 	defaultvalue = "on",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
-CV_PTBE.killwhilerunning = CV_RegisterVar({
+CV_PTD.killwhilerunning = CV_RegisterVar({
 	name = "ptd_killwhilerunning",
 	defaultvalue = "on",
 	flags = CV_NETVAR,
 	PossibleValue = CV_OnOff, 
 })
 
-CV_PTBE.screams = CV_RegisterVar({
+CV_PTD.screams = CV_RegisterVar({
 	name = "ptd_screams",
 	defaultvalue = "off",
 	flags = CV_SAVE,
@@ -201,7 +201,7 @@ CV_PTBE.screams = CV_RegisterVar({
 })
 
 
-CV_PTBE.pizzamask = CV_RegisterVar({
+CV_PTD.pizzamask = CV_RegisterVar({
 	name = "ptd_pizzamask",
 	defaultvalue = "on",
 	flags = CV_NETVAR,
@@ -209,7 +209,7 @@ CV_PTBE.pizzamask = CV_RegisterVar({
 })
 
 
-CV_PTBE.pizzastyle = CV_RegisterVar({
+CV_PTD.pizzastyle = CV_RegisterVar({
 	name = "ptd_pizzastyle",
 	defaultvalue = "pizzaface",
 	flags = CV_SAVE|CV_CALL,
@@ -236,19 +236,19 @@ COM_AddCommand("_ptd_pizzastyle_sync", function(player, blah, set)
 		return
 	end
 	
-	player.PTBE_pizzastyle = tonumber(set)
+	player.PTD_pizzastyle = tonumber(set)
 end)
 
 addHook("ThinkFrame", function ()
 	if not consoleplayer then return end
 	
-	if consoleplayer.PTBE_pizzastyle ~= CV_PTBE.pizzastyle.value then
-		COM_BufInsertText(consoleplayer, "_ptd_pizzastyle_sync " .. luaOnly .. " " .. CV_PTBE.pizzastyle.value)
+	if consoleplayer.PTD_pizzastyle ~= CV_PTD.pizzastyle.value then
+		COM_BufInsertText(consoleplayer, "_ptd_pizzastyle_sync " .. luaOnly .. " " .. CV_PTD.pizzastyle.value)
 	end
 end)
 
 
-CV_PTBE.oldmusic = CV_RegisterVar({
+CV_PTD.oldmusic = CV_RegisterVar({
 	name = "ptd_oldmusic",
 	defaultvalue = "off",
 	flags = CV_SAVE|CV_CALL,
@@ -263,4 +263,4 @@ CV_PTBE.oldmusic = CV_RegisterVar({
 	end
 })
 
-rawset(_G, "CV_PTJE", CV_PTBE)
+rawset(_G, "CV_PTJE", CV_PTD)

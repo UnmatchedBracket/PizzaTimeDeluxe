@@ -6,14 +6,14 @@ addHook("PlayerSpawn", function(player)
 		if player.pizzaface then
 			return
 		end
-		if PTBE.pizzatime and leveltime then
+		if PTD.pizzatime and leveltime then
 			player.spectator = true
 		end
 	end
 end)
 
 addHook("PlayerSpawn", function(player)
-	player["PT@hudstuff"] = PTBE.hudstuff
+	player["PT@hudstuff"] = PTD.hudstuff
 end)
 
 addHook("PlayerThink", function(player)
@@ -49,12 +49,12 @@ end)
 
 addHook("ThinkFrame", do
 	local exitingCount, playerCount = PTD_COUNT()
-	if PTBE.pizzatime then
-		PTBE.pizzatime_tics = $ + 1
-		if PTBE.timeleft and (exitingCount ~= playerCount) and CV_PTBE.timelimit.value then
-			PTBE.timeleft = $ - 1
-			if not PTBE.timeleft then
-				PTBE.timeover = true
+	if PTD.pizzatime then
+		PTD.pizzatime_tics = $ + 1
+		if PTD.timeleft and (exitingCount ~= playerCount) and CV_PTD.timelimit.value then
+			PTD.timeleft = $ - 1
+			if not PTD.timeleft then
+				PTD.timeover = true
 				for player in players.iterate() do
 					if player.mo and player.mo.valid and not player.pizzaface and not player.exiting then
 						P_KillMobj(player.mo)
@@ -74,15 +74,15 @@ addHook("PlayerThink", function(player)
 	local pmo = player.mo
 	local hudst = player["PT@hudstuff"]
 	if player.mo and player.mo.valid then
-		if player.exiting and (player.cmd.buttons & BT_ATTACK) and not PTBE.quitting 
-		and not ((CV_PTBE.lappingtype.value == 2) and (player.lapsdid >= CV_PTBE.maxlaps_perplayer.value)) then 
-			PTBE.StartNewLap(player.mo)
-			--PTBE.LapTP(player, true)
+		if player.exiting and (player.cmd.buttons & BT_ATTACK) and not PTD.quitting 
+		and not ((CV_PTD.lappingtype.value == 2) and (player.lapsdid >= CV_PTD.maxlaps_perplayer.value)) then 
+			PTD.StartNewLap(player.mo)
+			--PTD.LapTP(player, true)
 			hudst.anim_active = true
 			hudst.anim = 1
 		end
 		
-		if player.laptime ~= nil and PTBE.pizzatime and not player.exiting then
+		if player.laptime ~= nil and PTD.pizzatime and not player.exiting then
 			player.laptime = $ + 1
 		end
 		
@@ -127,7 +127,7 @@ end)
 addHook("PlayerThink", function(player)
 	-- a 6th of the max rank points, multiply later
 	-- idk what pec is supposed to mean but i guess it means a fraction of the maxrank points
-	local pec = (PTBE.maxrankpoints)/6
+	local pec = (PTD.maxrankpoints)/6
 	
 	--player.ptje_rank = "P"
 	-- boy what the hellllll o ma god way ayyaay

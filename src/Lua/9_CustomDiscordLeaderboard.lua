@@ -23,7 +23,7 @@ local function registerIt(successValue)
 				elseif (ping < 256) then statms = ':ping_red:' end
 				local rank = ':unknown:'
 				if player.pizzaface and leveltime then
-					rank = pfmaskData[player.PTBE_pizzastyle or 1].emoji or ":pizza:"
+					rank = pfmaskData[player.PTD_pizzastyle or 1].emoji or ":pizza:"
 				elseif player.spectator or player.playerstate == PST_DEAD
 					rank = ':dead:'
 				elseif player.ptje_rank
@@ -37,7 +37,7 @@ local function registerIt(successValue)
 				local pptime = G_TicsToMinutes(player.playtime, true)..":"..seconds
 				local line = statms..iconskin..rank..admin.."["..#player.."] `"..pname.."`: Score - "..player.score
 				if not player.pizzaface and player.ptje_rank and player.lapsdid then
-					line = $ .. "; Laps - "..player.lapsdid.." / "..CV_PTBE.maxlaps_perplayer.value
+					line = $ .. "; Laps - "..player.lapsdid.." / "..CV_PTD.maxlaps_perplayer.value
 				end
 				playerstats = $ + line.."\n"
 			end

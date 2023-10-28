@@ -1,9 +1,9 @@
 local hudmodname = "jiskpizzatime"
 
 -- rank to patch
-PTBE.r2p = function(v,rank) 
-	if v.cachePatch("PTBERANK_"..rank:upper()) then
-		return v.cachePatch("PTBERANK_"..rank:upper())
+PTD.r2p = function(v,rank) 
+	if v.cachePatch("PTDRANK_"..rank:upper()) then
+		return v.cachePatch("PTDRANK_"..rank:upper())
 	end
 end
 
@@ -49,26 +49,26 @@ end
 
 local bar_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
-	if PTBE.pizzatime then
+	if PTD.pizzatime then
 		local expectedtime = TICRATE*3
 		local start = 300*FRACUNIT -- animation position start
 		local finish = 175*FRACUNIT -- animation position end
 		local bar_finish = 1475*FRACUNIT/10
-		local TLIM = CV_PTBE.timelimit.value*TICRATE*60 
+		local TLIM = CV_PTD.timelimit.value*TICRATE*60 
 		-- "TLIM" is time limit number converted to seconds to minutes
-		--example, if CV_PTBE.timelimit.value is 4, it goes to 4*35 to 4*35*60 making it 4 minutes
+		--example, if CV_PTD.timelimit.value is 4, it goes to 4*35 to 4*35*60 making it 4 minutes
 		
 		--for the fade in
-		local ese = ease.inoutcubic(( (FU) / (expectedtime) )*PTBE.pizzatime_tics, start, finish)
+		local ese = ease.inoutcubic(( (FU) / (expectedtime) )*PTD.pizzatime_tics, start, finish)
 
-		local pfEase = min(max(PTBE.pizzatime_tics - CV_PTBE.pizzatimestun.value*TICRATE - 50, 0), 100)
+		local pfEase = min(max(PTD.pizzatime_tics - CV_PTD.pizzatimestun.value*TICRATE - 50, 0), 100)
 		pfEase = (pfEase*pfEase) * FU / 22
 
 		local bar = v.cachePatch("SHOWTIMEBAR") -- the orange border
 		local bar2 = v.cachePatch("SHOWTIMEBAR2") -- the purple thing
 		
-		--1/PTBE.timeleft
-		--PTBE.timeleft
+		--1/PTD.timeleft
+		--PTD.timeleft
 
 		local pizzaface = v.cachePatch('PIZZAFACE_SLEEPING1')
 		if animationtable['pizzaface'] // dont wanna risk anything yknow
@@ -81,11 +81,11 @@ local bar_hud = function(v,player)
 		end
 
 		--ease.linear(fixed_t t, [[fixed_t start], fixed_t end])
-		if CV_PTBE.timelimit.value then
+		if CV_PTD.timelimit.value then
 
 			
 			--for the bar length calculations
-			local progress = FixedDiv(TLIM*FRACUNIT-PTBE.timeleft*FRACUNIT, TLIM*FRACUNIT)
+			local progress = FixedDiv(TLIM*FRACUNIT-PTD.timeleft*FRACUNIT, TLIM*FRACUNIT)
 			local johnx = FixedMul(progress, bar_finish)
 			
 
@@ -97,7 +97,7 @@ local bar_hud = function(v,player)
 			local johnscale = (FU/2) -- + (FU/4)
 
 			-- during animation
-			if PTBE.pizzatime_tics < expectedtime then 
+			if PTD.pizzatime_tics < expectedtime then 
 				--purple bar, +1 fracunit because i want it inside the box 
 				-- MAX VALUE FOR HSCALE: FRACUNIT*150
 				-- v.drawStretched(91*FRACUNIT, ese + (5*FU)/3, min(themath,bar_finish), (FU/2) - (FU/12), bar2, V_SNAPTOBOTTOM)
@@ -116,7 +116,7 @@ local bar_hud = function(v,player)
 				v.drawScaled(230*FU, finish - (8*FU) + pfEase, FU/3, pizzaface, V_SNAPTOBOTTOM)
 				--v.drawString(int x, int y, string text, [int flags, [string align]])
 				if timeafteranimation then
-					local timestring = G_TicsToMTIME(PTBE.timeleft)
+					local timestring = G_TicsToMTIME(PTD.timeleft)
 					local x = 165*FRACUNIT
 					local y = 176*FRACUNIT + FRACUNIT/2
 					--drawSuperText(v, 160, 183+120-PTHUD.PizzaTimeTimerY,str,{font = 'PTFNT', flags = V_SNAPTOBOTTOM, align = 'center'})
@@ -124,7 +124,7 @@ local bar_hud = function(v,player)
 						--v.drawString(165, y + 5, timestring, V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT , "center")
 						customhud.CustomFontString(v, x, y, timestring, "PTFNT", (V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT), "center", FRACUNIT/2)
 					else
-						if PTBE.timeleft then
+						if PTD.timeleft then
 							customhud.CustomFontString(v, x, y, timestring, "PTFNT", (V_SNAPTOBOTTOM), "center", FRACUNIT/2)
 						else
 							customhud.CustomFontString(v, x, y, "TIME OVER!", "PTFNT", (V_SNAPTOBOTTOM), "center", FRACUNIT/2)
@@ -141,26 +141,26 @@ end
 
 local itspizzatime_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
-	if PTBE.pizzatime and PTBE.pizzatime_tics then
-		if PTBE.pizzatime_tics < 85
+	if PTD.pizzatime and PTD.pizzatime_tics then
+		if PTD.pizzatime_tics < 85
 			v.draw(0, 0, v.cachePatch("PIZZAPAL"), V_50TRANS|V_SNAPTOTOP|V_SNAPTOLEFT|V_PERPLAYER)
 		end
 	end
-	if PTBE.pizzatime and PTBE.pizzatime_tics and PTBE.pizzatime_tics < 10*TICRATE then
+	if PTD.pizzatime and PTD.pizzatime_tics and PTD.pizzatime_tics < 10*TICRATE then
 		local patch = v.cachePatch("ITSPIZZATIME1")
-		if CV_PTBE.homework.value then
+		if CV_PTD.homework.value then
 			patch = v.cachePatch("ITSHWTIME1")
 		end
 		if leveltime % 3 then
 			patch = v.cachePatch("ITSPIZZATIME2")
-			if CV_PTBE.homework.value then
+			if CV_PTD.homework.value then
 				patch = v.cachePatch("ITSHWTIME2")
 			end
 		end
-		if CV_PTBE.homework.value then
-			v.drawScaled(0, (250*FU) - (PTBE.pizzatime_tics*FU)*3, FU/2, patch)
+		if CV_PTD.homework.value then
+			v.drawScaled(0, (250*FU) - (PTD.pizzatime_tics*FU)*3, FU/2, patch)
 		else
-			v.drawScaled(100*FRACUNIT, (250*FU) - (PTBE.pizzatime_tics*FU)*3, FU/2, patch)
+			v.drawScaled(100*FRACUNIT, (250*FU) - (PTD.pizzatime_tics*FU)*3, FU/2, patch)
 		end
 	end
 end
@@ -169,16 +169,16 @@ local tooltips_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	local exitingCount, playerCount = PTD_COUNT()
 	local practicemodetext = "\x84\* PRACTICE MODE *"
-	local dynamiclapstext = "\x82\* DYNAMIC LAPS: "..PTBE.laps.." / "..PTBE.dynamic_maxlaps.." *"
-	local lapsandmaxlapstext = "\x82\* LAPS: "..PTBE.laps.." / "..CV_PTBE.maxlaps.value.." *"
-	local lapstext = "\x82\* LAPS: "..PTBE.laps.." *"
-	local lapsperplayertext = "\x82\* YOUR LAPS: "..player.lapsdid.." / "..CV_PTBE.maxlaps_perplayer.value.." *"
+	local dynamiclapstext = "\x82\* DYNAMIC LAPS: "..PTD.laps.." / "..PTD.dynamic_maxlaps.." *"
+	local lapsandmaxlapstext = "\x82\* LAPS: "..PTD.laps.." / "..CV_PTD.maxlaps.value.." *"
+	local lapstext = "\x82\* LAPS: "..PTD.laps.." *"
+	local lapsperplayertext = "\x82\* YOUR LAPS: "..player.lapsdid.." / "..CV_PTD.maxlaps_perplayer.value.." *"
 
 
-	if (not player.pizzaface) and (player.exiting) and (not PTBE.quitting) and (player.playerstate ~= PST_DEAD) and (exitingCount ~= playerCount) then
+	if (not player.pizzaface) and (player.exiting) and (not PTD.quitting) and (player.playerstate ~= PST_DEAD) and (exitingCount ~= playerCount) then
 		v.drawString(160, 120, "\x85\* Press FIRE to try a new lap! *", V_TRANSLUCENT|V_SNAPTOBOTTOM|V_PERPLAYER, "thin-center")
 	end
-	if PTBE.pizzatime then
+	if PTD.pizzatime then
 
 		
 		if player.stuntime then
@@ -203,17 +203,17 @@ local tooltips_hud = function(v,player)
 					end
 				end
 				-- Early returns start here --
-				if player.pizzaface and CV_PTBE.lappingtype.value == 2 then return end
-				if CV_PTBE.lappingtype.value == 2 then
+				if player.pizzaface and CV_PTD.lappingtype.value == 2 then return end
+				if CV_PTD.lappingtype.value == 2 then
 					v.drawString(165, 165, lapsperplayertext , V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 					return
 				end
-				if CV_PTBE.dynamiclaps.value then
+				if CV_PTD.dynamiclaps.value then
 					v.drawString(165, 165, dynamiclapstext , V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 					return
 				end
 				
-				if CV_PTBE.maxlaps.value then
+				if CV_PTD.maxlaps.value then
 					v.drawString(165, 165, lapsandmaxlapstext, V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 					return
 				else
@@ -236,18 +236,18 @@ local tooltips_hud = function(v,player)
 					end
 				end
 				-- Early returns start here --
-				if player.pizzaface and CV_PTBE.lappingtype.value == 2 then return end
-				if CV_PTBE.lappingtype.value == 2 then
+				if player.pizzaface and CV_PTD.lappingtype.value == 2 then return end
+				if CV_PTD.lappingtype.value == 2 then
 					v.drawString(165, 165, lapsperplayertext , V_SNAPTOBOTTOM, "thin-center")
 					return
 				end
 				
-				if CV_PTBE.dynamiclaps.value then
+				if CV_PTD.dynamiclaps.value then
 					v.drawString(165, 165, dynamiclapstext, V_SNAPTOBOTTOM, "thin-center")
 					return
 				end
 				
-				if CV_PTBE.maxlaps.value then
+				if CV_PTD.maxlaps.value then
 					v.drawString(165, 165, lapsandmaxlapstext, V_PERPLAYER|V_SNAPTOBOTTOM, "thin-center")
 					return
 				else
@@ -297,17 +297,17 @@ local rank_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if player.pizzaface then return end
 	if player.ptje_rank then
-		v.drawScaled(15*FRACUNIT,55*FRACUNIT,FRACUNIT/3, PTBE.r2p(v,player.ptje_rank), V_SNAPTOLEFT|V_SNAPTOTOP)
+		v.drawScaled(15*FRACUNIT,55*FRACUNIT,FRACUNIT/3, PTD.r2p(v,player.ptje_rank), V_SNAPTOLEFT|V_SNAPTOTOP)
 		if player.timeshit then
-			v.drawScaled(15*FRACUNIT,55*FRACUNIT,FRACUNIT/3, PTBE.r2p(v, "BROKEN"), V_SNAPTOLEFT|V_SNAPTOTOP|V_20TRANS)
+			v.drawScaled(15*FRACUNIT,55*FRACUNIT,FRACUNIT/3, PTD.r2p(v, "BROKEN"), V_SNAPTOLEFT|V_SNAPTOTOP|V_20TRANS)
 		end
 	end
 end
 
 local event_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
-	if not PTBE.currentEvent then return end
-	local event = PTBE.currentEvent
+	if not PTD.currentEvent then return end
+	local event = PTD.currentEvent
 	if leveltime > TICRATE*5 then return end
 	if event.name == "mirrorPrelude" then
 		v.drawNameTag(160,  80, "MAGIC MIRROR NEXT ROUND", V_CENTERNAMETAG, SKINCOLOR_ICY, SKINCOLOR_AQUA)
@@ -327,7 +327,7 @@ end
 local faceswap_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if not (player.pizzaface and leveltime) then return end
-	if player.stuntime and PTBE.pizzatime_tics < TICRATE*CV_PTBE.pizzatimestun.value+20 then
+	if player.stuntime and PTD.pizzatime_tics < TICRATE*CV_PTD.pizzatimestun.value+20 then
 		v.drawString(160, 150, "Move left and right to swap faces", V_ALLOWLOWERCASE, "small-center")
 	end
 end
@@ -337,5 +337,5 @@ customhud.SetupItem("ptje_itspizzatime", hudmodname, itspizzatime_hud, "game", 0
 customhud.SetupItem("ptje_tooltips", hudmodname, tooltips_hud, "game", 0)
 customhud.SetupItem("ptje_lap", hudmodname, lap_hud, "game", 0)
 customhud.SetupItem("ptje_rank", hudmodname, rank_hud, "game", 0)
-customhud.SetupItem("ptbe_event", hudmodname, event_hud, "game", 0)
-customhud.SetupItem("ptbe_faceswap", hudmodname, faceswap_hud, "game", 0)
+customhud.SetupItem("PTD_event", hudmodname, event_hud, "game", 0)
+customhud.SetupItem("PTD_faceswap", hudmodname, faceswap_hud, "game", 0)
