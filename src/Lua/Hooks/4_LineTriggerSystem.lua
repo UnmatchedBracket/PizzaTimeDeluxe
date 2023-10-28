@@ -16,7 +16,7 @@ addHook("MobjLineCollide", function(mobj, line)
 	if player.spectator then return end -- no trolling.
 
     -- Line Check at End
-	if CV_PTD.collisionsystem.value == 1 then
+	if CV_PTSR.collisionsystem.value == 1 then
 	
 		local SSF_REALEXIT = 1<<7 -- the ssf_exit is wrong lmao
 		--local SSF_REALEXIT = SSF_EXIT | SSF_SPECIALSTAGEPIT | SSF_RETURNFLAG -- this is wrong for testing
@@ -25,15 +25,15 @@ addHook("MobjLineCollide", function(mobj, line)
         or (line.backsector and GetSecSpecial(line.backsector.special, 4) == 2)
         or (line.frontsector and (line.frontsector.specialflags & SSF_REALEXIT)) 
         or (line.backsector and (line.backsector.specialflags & SSF_REALEXIT)) then 
-			PTD.PizzaTimeTrigger(mobj)
+			PTSR.PizzaTimeTrigger(mobj)
 		end
 
 		-- Sign at start check.
-		if ((line.backsector and line.backsector == PTD.endsector)
-		or (line.frontsector and line.frontsector == PTD.endsector)) and not player.exiting then 
+		if ((line.backsector and line.backsector == PTSR.endsector)
+		or (line.frontsector and line.frontsector == PTSR.endsector)) and not player.exiting then 
 		
 			if player.pizzaface then
-				PTD.StartNewLap(mobj)
+				PTSR.StartNewLap(mobj)
 				return
 			end
 			
@@ -41,8 +41,8 @@ addHook("MobjLineCollide", function(mobj, line)
 			P_DoPlayerExit(player)
 			
 			chatprint(lapstring, true)
-			if CV_PTD.forcelap.value then 
-				PTD.StartNewLap(mobj)
+			if CV_PTSR.forcelap.value then 
+				PTSR.StartNewLap(mobj)
 			end
 
 			if player.lapsdid ~= nil then

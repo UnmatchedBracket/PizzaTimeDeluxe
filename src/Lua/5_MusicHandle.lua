@@ -1,11 +1,11 @@
 addHook("ThinkFrame", function()
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
-	if CV_PTD.nomusic.value then return end
+	if CV_PTSR.nomusic.value then return end
 	
 	if not consoleplayer then return end
 	
 	local laps = consoleplayer.lapsdid
-	if PTD.pizzatime then
+	if PTSR.pizzatime then
 		if laps <= 1 and mapmusname ~= "PIZTIM" then
 			P_PlayJingleMusic(player, "PIZTIM", nil, true, JT_OTHER)
 			mapmusname = "PIZTIM"

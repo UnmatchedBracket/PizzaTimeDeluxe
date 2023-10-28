@@ -35,7 +35,7 @@ states[S_PILLARJOHN_PAIN] = {
 
 
 
-rawset(_G, "FUNC_PTD", {}) -- functions
+rawset(_G, "FUNC_PTSR", {}) -- functions
 
 freeslot("MT_PIZZAMASK", "S_PIZZAFACE", "S_CONEBALL", "S_PF_EGGMAN", "SPR_PZAT", "SPR_CONB")
 

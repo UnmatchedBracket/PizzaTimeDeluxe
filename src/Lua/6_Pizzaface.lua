@@ -9,7 +9,7 @@ end)
 
 --Pizza Face Thinker
 addHook("PlayerThink", function(player)
-	player.PTD_pizzastyle = $ or 1
+	player.PTSR_pizzastyle = $ or 1
 	player.stuntime = $ or 0 
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if player.realmo and player.realmo.valid and player.pizzaface and leveltime then
@@ -31,16 +31,16 @@ addHook("PlayerThink", function(player)
 			player.mo.momz = 0
 			--player.pflags = $|PF_FULLSTASIS
 			if not player.stuntime then -- once it hits zero, LAUGH AHHHHAHHAAHAHAHHAHAH
-				if CV_PTD.pizzalaugh.value and not player.pizzachargecooldown
-					S_StartSound(player.mo, pfmaskData[player.PTD_pizzastyle].sound)
+				if CV_PTSR.pizzalaugh.value and not player.pizzachargecooldown
+					S_StartSound(player.mo, pfmaskData[player.PTSR_pizzastyle].sound)
 				end
 
-				if not PTD.showtime // hiiii adding onto this for showtime
-					PTD.showtime = true
+				if not PTSR.showtime // hiiii adding onto this for showtime
+					PTSR.showtime = true
 					local anim = animationtable['pizzaface']
 					anim:ChangeAnimation('PIZZAFACE_SHOWTIME', 3, 8, false)
 				end
-			elseif PTD.pizzatime_tics < TICRATE*CV_PTD.pizzatimestun.value+20 then
+			elseif PTSR.pizzatime_tics < TICRATE*CV_PTSR.pizzatimestun.value+20 then
 				player.mo.momz = P_MobjFlip(player.mo)*-FU
 				if player.facechangecooldown then
 					player.facechangecooldown = $ - 1
@@ -54,10 +54,10 @@ addHook("PlayerThink", function(player)
 					if change ~= 0 then
 						S_StartSound(nil, sfx_menu1, player)
 						player.facechangecooldown = TICRATE/3
-						local changeTo = (player.PTD_pizzastyle + change + #pfmaskData - 1) % #pfmaskData + 1
-						player.PTD_pizzastyle = changeTo
+						local changeTo = (player.PTSR_pizzastyle + change + #pfmaskData - 1) % #pfmaskData + 1
+						player.PTSR_pizzastyle = changeTo
 						if consoleplayer == player then
-							CV_StealthSet(CV_PTD.pizzastyle, changeTo)
+							CV_StealthSet(CV_PTSR.pizzastyle, changeTo)
 						end
 					end
 				end
@@ -66,7 +66,7 @@ addHook("PlayerThink", function(player)
 		
 		
 
-		if (not player.pizzamask or not player.pizzamask.valid) and CV_PTD.pizzamask.value then
+		if (not player.pizzamask or not player.pizzamask.valid) and CV_PTSR.pizzamask.value then
 			player.pizzamask = P_SpawnMobj(player.realmo.x,player.realmo.y,player.realmo.z,MT_PIZZAMASK)
 			player.pizzamask.targetplayer = player --dream reference
 			player.pizzamask.scale = pfmaskData[1].scale
@@ -83,7 +83,7 @@ addHook("PlayerThink", function(player)
 		
 		if not (leveltime % 3) and player.pizzamask and player.pizzamask.valid and player.speed > FRACUNIT then
 			if (player ~= displayplayer) or (camera.chase and player == displayplayer) then
-				local colors = pfmaskData[player.PTD_pizzastyle].trails
+				local colors = pfmaskData[player.PTSR_pizzastyle].trails
 				local ghost = P_SpawnGhostMobj(player.pizzamask)
 				P_SetOrigin(ghost, player.pizzamask.x, player.pizzamask.y, player.pizzamask.z)
 				ghost.fuse = 11
@@ -98,11 +98,11 @@ addHook("PlayerThink", function(player)
 			end
 			player.redgreen = not player.redgreen
 		end
-		if player.exiting or PTD.quitting then
+		if player.exiting or PTSR.quitting then
 			player.pizzacharge = 0
 		end
 		if not player.exiting and (player.cmd.buttons & BT_ATTACK) 
-		and not PTD.quitting and not player.stuntime and not player.pizzachargecooldown then -- basically check if you're active in general
+		and not PTSR.quitting and not player.stuntime and not player.pizzachargecooldown then -- basically check if you're active in general
 			if player.pizzacharge < TICRATE then
 				player.pizzacharge = $ + 1
 			else
@@ -120,11 +120,11 @@ addHook("PlayerThink", function(player)
 				local chosen_peppino = peppinos[chosen_peppinonum] -- get the chosen value in table
 				if peppinos ~= {} then
 					player.pizzacharge = 0
-					player.pizzachargecooldown = CV_PTD.pizzatpcooldown.value*TICRATE
-					player.stuntime = CV_PTD.pizzatpstuntime.value*TICRATE
+					player.pizzachargecooldown = CV_PTSR.pizzatpcooldown.value*TICRATE
+					player.stuntime = CV_PTSR.pizzatpstuntime.value*TICRATE
 				
 					P_SetOrigin(player.mo, players[chosen_peppino].mo.x,players[chosen_peppino].mo.y,players[chosen_peppino].mo.z)
-					S_StartSound(player.mo, pfmaskData[player.PTD_pizzastyle].sound)
+					S_StartSound(player.mo, pfmaskData[player.PTSR_pizzastyle].sound)
 				end
 
 			end
@@ -152,7 +152,7 @@ addHook("MobjThinker", function(mobj)
 		local targetplayer = mobj.targetplayer
 		P_MoveOrigin(mobj, targetplayer.mo.x, targetplayer.mo.y, targetplayer.mo.z)
 		mobj.angle = targetplayer.drawangle
-		local thisMask = pfmaskData[targetplayer.PTD_pizzastyle]
+		local thisMask = pfmaskData[targetplayer.PTSR_pizzastyle]
 		if mobj.state ~= thisMask.state then
 			mobj.state = thisMask.state
 			mobj.scale = thisMask.scale
@@ -173,7 +173,7 @@ addHook("ShouldDamage", function(target, inflictor)
 end)
  -- taken from the original since barely anything needs to be changed
 addHook("MobjCollide", function(mo1, mo2)
-	if not PTD.pizzatime then return end
+	if not PTSR.pizzatime then return end
 	if not (mo1.player and mo1.valid and mo1.player.valid) then return end
 	if not (mo2.player and mo2.valid and mo2.player.valid) or (mo2.player and not mo2.player.pizzaface) then return end -- only continue if mo2 is pizzaface
 	if mo2.player.stuntime then return end

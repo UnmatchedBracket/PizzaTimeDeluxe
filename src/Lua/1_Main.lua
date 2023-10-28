@@ -10,7 +10,7 @@ G_AddGametype({
 
 local loaded_mods = false
 
-rawset(_G, "PTD", { -- variables
+rawset(_G, "PTSR", { -- variables
 	spawn_location = 
 	{x = 0, y = 0, z = 0, angle = 0}, -- where the sign is at the start of the map
 	
@@ -64,7 +64,7 @@ addHook("NetVars", function(net)
 	}
 	
 	for i,v in ipairs(sync_list) do
-		PTD[v] = net($)
+		PTSR[v] = net($)
 	end
 end)
 
@@ -76,26 +76,26 @@ local function ResetPlayerVars(player)
 	player.spectator = false
 	player.lapsdid = 0
 	player.laptime = 0
-	player["PT@hudstuff"] = PTD.hudstuff
+	player["PT@hudstuff"] = PTSR.hudstuff
 end
 
-PTD.spawn_location_atdefault = (
-PTD.spawn_location.x == 0 and 
-PTD.spawn_location.y == 0 and 
-PTD.spawn_location.z == 0 and 
-PTD.spawn_location.angle == 0
+PTSR.spawn_location_atdefault = (
+PTSR.spawn_location.x == 0 and 
+PTSR.spawn_location.y == 0 and 
+PTSR.spawn_location.z == 0 and 
+PTSR.spawn_location.angle == 0
 ) -- returns true if at the defaults
 
-PTD.end_location_atdefault = (
-PTD.end_location.x == 0 and 
-PTD.end_location.y == 0 and 
-PTD.end_location.z == 0 and 
-PTD.end_location.angle == 0
+PTSR.end_location_atdefault = (
+PTSR.end_location.x == 0 and 
+PTSR.end_location.y == 0 and 
+PTSR.end_location.z == 0 and 
+PTSR.end_location.angle == 0
 ) -- returns true if at the defaults
 
 
 
-rawset(_G, "PTD_COUNT", do
+rawset(_G, "PTSR_COUNT", do
 	local playerCount = 0
 	local exitingCount = 0
 	local pizzaCount = 0
@@ -104,7 +104,7 @@ rawset(_G, "PTD_COUNT", do
 			if player.pizzaface then
 				pizzaCount = $+1
 			end
-			if player.exiting or player.spectator or player.pizzaface or (player.playerstate == PST_DEAD and PTD.pizzatime)
+			if player.exiting or player.spectator or player.pizzaface or (player.playerstate == PST_DEAD and PTSR.pizzatime)
 				exitingCount = $+1
 			end
 		end
@@ -118,34 +118,34 @@ end)
 
 --heres where the values reset when maps load
 local function InitMap()
-	PTD.pizzatime = false -- doesn't matter what gamemode it is, just make it false all the time.
-    PTD.spawn_location = {x = 0, y = 0, z = 0}
-    PTD.endsector = nil
-	PTD.laps = 0
-	PTD.quitting = false
-	PTD.dynamic_maxlaps = 0
-	PTD.pizzatime_tics = 0 
-	PTD.timeleft = 0
-	PTD.timeover = false
-	PTD.showtime = false
+	PTSR.pizzatime = false -- doesn't matter what gamemode it is, just make it false all the time.
+    PTSR.spawn_location = {x = 0, y = 0, z = 0}
+    PTSR.endsector = nil
+	PTSR.laps = 0
+	PTSR.quitting = false
+	PTSR.dynamic_maxlaps = 0
+	PTSR.pizzatime_tics = 0 
+	PTSR.timeleft = 0
+	PTSR.timeover = false
+	PTSR.showtime = false
 end
 
 local function InitMap2()
     if gametype ~= GT_PIZZATIMEDELUXE then return end
-	PTD.john = nil
+	PTSR.john = nil
     for map in mapthings.iterate do
         if map.type == 1 then
-            PTD.spawn_location.x = map.x
-            PTD.spawn_location.y = map.y
-            PTD.spawn_location.z = map.z
-            PTD.spawn_location.angle = map.angle
+            PTSR.spawn_location.x = map.x
+            PTSR.spawn_location.y = map.y
+            PTSR.spawn_location.z = map.z
+            PTSR.spawn_location.angle = map.angle
         end
 		
         if map.type == 501 then
-            PTD.end_location.x = map.x
-            PTD.end_location.y = map.y
-            PTD.end_location.z = map.z
-            PTD.end_location.angle = map.angle
+            PTSR.end_location.x = map.x
+            PTSR.end_location.y = map.y
+            PTSR.end_location.z = map.z
+            PTSR.end_location.angle = map.angle
 			local john = P_SpawnMobj(
 				map.x*FU - cos(map.angle*ANG1)*200, 
 				map.y*FU - sin(map.angle*ANG1)*200, 
@@ -156,7 +156,7 @@ local function InitMap2()
 			if map.options & MTF_OBJECTFLIP then
 				john.flags2 = $ | MF2_OBJECTFLIP
 			end
-			PTD.john = john
+			PTSR.john = john
         end
     end
 	-- dont use the playercount function since it will iterate through all players twice
@@ -168,12 +168,12 @@ local function InitMap2()
 		-- INCREMENT OVER --
 		ResetPlayerVars(player)	
 	end
-	PTD.dynamic_maxlaps = playercount*2
+	PTSR.dynamic_maxlaps = playercount*2
 	
-	PTD.maxrankpoints = PTD.GetRingCount()*1500
+	PTSR.maxrankpoints = PTSR.GetRingCount()*1500
 end
 
-PTD.ReturnPizzaTimeMusic = function()
+PTSR.ReturnPizzaTimeMusic = function()
 
 	local song = mapmusname
 	local songdata = {}
@@ -184,7 +184,7 @@ PTD.ReturnPizzaTimeMusic = function()
 	songdata["Gluten Getaway"] = 'GLUWAY'
 	songdata["Pasta La Vista"] = 'PASTVI'
 
-	if PTD.pizzatime then
+	if PTSR.pizzatime then
 		if consoleplayer.lapsdid == 2 then
 			song = "The Death That I Deservioli"
 		elseif consoleplayer.lapsdid == 3 then
@@ -206,24 +206,24 @@ PTD.ReturnPizzaTimeMusic = function()
 end
 
 -- doesnt actually trigger or increment lap, just tps you
-PTD.LapTP = function(player, invincibility)
+PTSR.LapTP = function(player, invincibility)
 	if not player and not player.mo and not player.mo.valid then return end -- safety
 	player.exiting = 0
-	P_SetOrigin(player.mo, PTD.end_location.x*FRACUNIT,PTD.end_location.y*FRACUNIT, PTD.end_location.z*FRACUNIT)
-	player.mo.angle = PTD.end_location.angle - ANGLE_90
+	P_SetOrigin(player.mo, PTSR.end_location.x*FRACUNIT,PTSR.end_location.y*FRACUNIT, PTSR.end_location.z*FRACUNIT)
+	player.mo.angle = PTSR.end_location.angle - ANGLE_90
 	
 	if invincibility then
-		player.powers[pw_invulnerability] = max($,CV_PTD.tpinv.value*TICRATE) -- converts to seconds
+		player.powers[pw_invulnerability] = max($,CV_PTSR.tpinv.value*TICRATE) -- converts to seconds
 	end
 end
 --does the parameters shit for you.
 
 
-PTD.StartNewLap = function(mobj)
+PTSR.StartNewLap = function(mobj)
 	local player = mobj.player
 	
 	if not player.pizzaface then
-		PTD.LapTP(player, true)
+		PTSR.LapTP(player, true)
 		//player.lapsdid = $+1
 
 		S_StartSound(nil, sfx_lap2, player)
@@ -233,8 +233,8 @@ PTD.StartNewLap = function(mobj)
 		
 		
 		player.lapsdid = $ + 1
-		if player.lapsdid > PTD.laps
-			PTD.laps = player.lapsdid
+		if player.lapsdid > PTSR.laps
+			PTSR.laps = player.lapsdid
 		end
 
 		
@@ -243,49 +243,49 @@ PTD.StartNewLap = function(mobj)
 		if player.elfilin and player.mo.elfilin_portal then
 			player.mo.elfilin_portal.fuse = 1
 		end
-		S_ChangeMusic(PTD.ReturnPizzaTimeMusic(mobj.player), true)
+		S_ChangeMusic(PTSR.ReturnPizzaTimeMusic(mobj.player), true)
 	else -- FAKE LAP -- 
-		mobj.player.stuntime = TICRATE*CV_PTD.fakelapstun.value
-		P_SetOrigin(mobj, PTD.end_location.x*FRACUNIT,PTD.end_location.y*FRACUNIT, PTD.end_location.z*FRACUNIT)
-		mobj.angle = PTD.end_location.angle - ANGLE_90
+		mobj.player.stuntime = TICRATE*CV_PTSR.fakelapstun.value
+		P_SetOrigin(mobj, PTSR.end_location.x*FRACUNIT,PTSR.end_location.y*FRACUNIT, PTSR.end_location.z*FRACUNIT)
+		mobj.angle = PTSR.end_location.angle - ANGLE_90
 	end
 	
 end 
 
 
-PTD.PizzaTimeTrigger = function(mobj)
-	if not (PTD.pizzatime and PTD.spawn_location_atdefault) then
+PTSR.PizzaTimeTrigger = function(mobj)
+	if not (PTSR.pizzatime and PTSR.spawn_location_atdefault) then
 		if DiscordBot then
 			DiscordBot.Data.msgsrb2 = $ .. ":pizza: Pizza Time has started! Pizzas:\n"
 		end
-		PTD.pizzatime = true
+		PTSR.pizzatime = true
 		PTAnimFunctions.NewAnimation('pizzaface', 'PIZZAFACE_SLEEPING', 2, 11, true)
 		PTAnimFunctions.NewAnimation('john', 'JOHN', 2, 22, true)
 
 		local thesign = P_SpawnMobj(0,0,0, MT_SIGN)
-		P_SetOrigin(thesign, PTD.spawn_location.x*FRACUNIT, PTD.spawn_location.y*FRACUNIT, PTD.spawn_location.z*FRACUNIT)
-		thesign.angle = PTD.spawn_location.angle
+		P_SetOrigin(thesign, PTSR.spawn_location.x*FRACUNIT, PTSR.spawn_location.y*FRACUNIT, PTSR.spawn_location.z*FRACUNIT)
+		thesign.angle = PTSR.spawn_location.angle
 		
 		if thesign.subsector then
-			PTD.endsector = thesign.subsector.sector
+			PTSR.endsector = thesign.subsector.sector
 		end
 		
-		PTD.timeleft = CV_PTD.timelimit.value*TICRATE*60
-		PTD.laps = 1
+		PTSR.timeleft = CV_PTSR.timelimit.value*TICRATE*60
+		PTSR.laps = 1
 		
 		--hit the player that touched the location with these variables
-		local _, playerCount = PTD_COUNT()
+		local _, playerCount = PTSR_COUNT()
 		if playerCount > 1 then
-			if CV_PTD.pizzachoosetype.value == 1 then
+			if CV_PTSR.pizzachoosetype.value == 1 then
 				mobj.player.pizzaface = true
-				mobj.player.stuntime = TICRATE*CV_PTD.pizzatimestun.value+20
+				mobj.player.stuntime = TICRATE*CV_PTSR.pizzatimestun.value+20
 				chatprint("\x85*"..mobj.player.name.." has become a pizza!") 
 				if DiscordBot then
 					DiscordBot.Data.msgsrb2 = $ .. "- [" .. #mobj.player .. "] **" .. mobj.player.name .. "**\n"
 				end
 			else
 				local active_playernums = {}
-				local playerschoosing = CV_PTD.pizzacount.value
+				local playerschoosing = CV_PTSR.pizzacount.value
 				
 				if playerCount < playerschoosing then
 					playerschoosing = 1
@@ -293,7 +293,7 @@ PTD.PizzaTimeTrigger = function(mobj)
 				if playerschoosing then
 					-- store every playernum
 					for player in players.iterate() do
-						if CV_PTD.pizzachoosetype.value == 3 and player == mobj.player then
+						if CV_PTSR.pizzachoosetype.value == 3 and player == mobj.player then
 							continue
 						end
 						if player.quittime then
@@ -308,7 +308,7 @@ PTD.PizzaTimeTrigger = function(mobj)
 						local chosen_playernum = P_RandomRange(1,#active_playernums) -- random entry in table
 						local chosen_player = active_playernums[chosen_playernum] -- get the chosen value in table
 						players[chosen_player].pizzaface = true
-						players[chosen_player].stuntime = TICRATE*CV_PTD.pizzatimestun.value+20
+						players[chosen_player].stuntime = TICRATE*CV_PTSR.pizzatimestun.value+20
 						chatprint("\x85*"..players[chosen_player].name.." has become a pizza!") 
 						if DiscordBot then
 							DiscordBot.Data.msgsrb2 = $ .. "- [" .. chosen_player .. "] **" .. players[chosen_player].name .. "**\n"
@@ -322,10 +322,10 @@ PTD.PizzaTimeTrigger = function(mobj)
 			local pmo = player.mo
 			if not (pmo and pmo.valid) then continue end
 			player.lapsdid = 1
-			P_SetOrigin(pmo, PTD.end_location.x*FRACUNIT,PTD.end_location.y*FRACUNIT, PTD.end_location.z*FRACUNIT)
-			pmo.angle = PTD.end_location.angle - ANGLE_90
+			P_SetOrigin(pmo, PTSR.end_location.x*FRACUNIT,PTSR.end_location.y*FRACUNIT, PTSR.end_location.z*FRACUNIT)
+			pmo.angle = PTSR.end_location.angle - ANGLE_90
 			if not player.pizzaface then
-				player.powers[pw_invulnerability] = CV_PTD.tpinv.value*TICRATE+20
+				player.powers[pw_invulnerability] = CV_PTSR.tpinv.value*TICRATE+20
 				player.powers[pw_nocontrol] = 20
 				player.mo.momx = 0
 				player.mo.momy = 0
@@ -333,8 +333,8 @@ PTD.PizzaTimeTrigger = function(mobj)
 			end
 		end   
 		
-		if PTD.john then
-			local john = PTD.john
+		if PTSR.john then
+			local john = PTSR.john
 			john.state = S_PILLARJOHN_PAIN
 			john.flags = $ | MF_NOCLIP | MF_NOCLIPHEIGHT
 			john.momx = -cos(john.angle)*8
@@ -342,11 +342,11 @@ PTD.PizzaTimeTrigger = function(mobj)
 			john.momz = P_MobjFlip(john)*8*FU
 		end
 
-		S_ChangeMusic(PTD.ReturnPizzaTimeMusic(mobj.player), true)
+		S_ChangeMusic(PTSR.ReturnPizzaTimeMusic(mobj.player), true)
 	end
 end
 
-PTD.GetRingCount = function()
+PTSR.GetRingCount = function()
 	local count = 0
 	for mobj in mobjs.iterate() do
 		if mobj.type == MT_RING then
@@ -373,5 +373,5 @@ addHook("MapLoad", InitMap2)
 
 
 rawset(_G, "GT_PIZZATIMEJISK", GT_PIZZATIMEDELUXE)
-rawset(_G, "PTJE", PTD)
-rawset(_G, "JISK_COUNT", PTD_COUNT)
+rawset(_G, "PTJE", PTSR)
+rawset(_G, "JISK_COUNT", PTSR_COUNT)
