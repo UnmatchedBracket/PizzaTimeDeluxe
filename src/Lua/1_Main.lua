@@ -1,6 +1,6 @@
 G_AddGametype({
     name = "Pizza Time Deluxe",
-    identifier = "PIZZATIMEDELUXE",
+    identifier = "PTSPICER",
     typeoflevel = TOL_RACE,
     rules = GTR_FRIENDLY|GTR_SPAWNENEMIES|GTR_TIMELIMIT,
     intermissiontype = int_match,
@@ -131,7 +131,7 @@ local function InitMap()
 end
 
 local function InitMap2()
-    if gametype ~= GT_PIZZATIMEDELUXE then return end
+    if gametype ~= GT_PTSPICER then return end
 	PTSR.john = nil
     for map in mapthings.iterate do
         if map.type == 1 then
@@ -372,6 +372,6 @@ addHook("MapLoad", InitMap2)
 
 
 
-rawset(_G, "GT_PIZZATIMEJISK", GT_PIZZATIMEDELUXE)
+rawset(_G, "GT_PIZZATIMEJISK", GT_PTSPICER)
 rawset(_G, "PTJE", PTSR)
 rawset(_G, "JISK_COUNT", PTSR_COUNT)

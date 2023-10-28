@@ -11,7 +11,7 @@ end)
 addHook("PlayerThink", function(player)
 	player.PTSR_pizzastyle = $ or 1
 	player.stuntime = $ or 0 
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if player.realmo and player.realmo.valid and player.pizzaface and leveltime then
 		if player.redgreen == nil then
 			player.redgreen = $ or false
@@ -147,7 +147,7 @@ end)
 
 -- Pizza Mask Thinker
 addHook("MobjThinker", function(mobj)
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if mobj.targetplayer and mobj.targetplayer.valid and mobj.targetplayer.mo and mobj.targetplayer.mo.valid then
 		local targetplayer = mobj.targetplayer
 		P_MoveOrigin(mobj, targetplayer.mo.x, targetplayer.mo.y, targetplayer.mo.z)

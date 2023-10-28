@@ -48,7 +48,7 @@ local function drawBarFill(v, x, y, scale, progress)
 end
 
 local bar_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if PTSR.pizzatime then
 		local expectedtime = TICRATE*3
 		local start = 300*FRACUNIT -- animation position start
@@ -140,7 +140,7 @@ local bar_hud = function(v,player)
 end
 
 local itspizzatime_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if PTSR.pizzatime and PTSR.pizzatime_tics then
 		if PTSR.pizzatime_tics < 85
 			v.draw(0, 0, v.cachePatch("PIZZAPAL"), V_50TRANS|V_SNAPTOTOP|V_SNAPTOLEFT|V_PERPLAYER)
@@ -166,7 +166,7 @@ local itspizzatime_hud = function(v,player)
 end
 
 local tooltips_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	local exitingCount, playerCount = PTSR_COUNT()
 	local practicemodetext = "\x84\* PRACTICE MODE *"
 	local dynamiclapstext = "\x82\* DYNAMIC LAPS: "..PTSR.laps.." / "..PTSR.dynamic_maxlaps.." *"
@@ -260,7 +260,7 @@ local tooltips_hud = function(v,player)
 end
 
 local lap_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if not player.laptime then return end
 	if player.pizzaface then return end
 	if not (consoleplayer and consoleplayer.valid) then return end
@@ -294,7 +294,7 @@ local lap_hud = function(v,player)
 end
 
 local rank_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if player.pizzaface then return end
 	if player.ptje_rank then
 		v.drawScaled(15*FRACUNIT,55*FRACUNIT,FRACUNIT/3, PTSR.r2p(v,player.ptje_rank), V_SNAPTOLEFT|V_SNAPTOTOP)
@@ -305,7 +305,7 @@ local rank_hud = function(v,player)
 end
 
 local event_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if not PTSR.currentEvent then return end
 	local event = PTSR.currentEvent
 	if leveltime > TICRATE*5 then return end
@@ -325,7 +325,7 @@ local event_hud = function(v,player)
 end
 
 local faceswap_hud = function(v,player)
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if not (player.pizzaface and leveltime) then return end
 	if player.stuntime and PTSR.pizzatime_tics < TICRATE*CV_PTSR.pizzatimestun.value+20 then
 		v.drawString(160, 150, "Move left and right to swap faces", V_ALLOWLOWERCASE, "small-center")

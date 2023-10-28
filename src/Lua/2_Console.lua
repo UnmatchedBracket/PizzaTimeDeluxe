@@ -1,7 +1,7 @@
 rawset(_G, "CV_PTSR", {}) -- for console vars
 
 COM_AddCommand("PTSR_makepizza", function(player, arg)
-	if gametype ~= GT_PIZZATIMEDELUXE then
+	if gametype ~= GT_PTSPICER then
 		CONS_Printf(player, "Command must be ran in the Pizza Time Deluxe mode.")
 		return
 	end
@@ -31,7 +31,7 @@ end,1)
 
 
 COM_AddCommand("PTSR_pizzatimenow", function(player)
-	if gametype ~= GT_PIZZATIMEDELUXE then
+	if gametype ~= GT_PTSPICER then
 		CONS_Printf(player, "Command must be ran in the Pizza Time Deluxe mode.")
 		return
 	end

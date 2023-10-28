@@ -1,5 +1,5 @@
 addHook("ThinkFrame", function()
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if CV_PTSR.nomusic.value then return end
 	
 	if not consoleplayer then return end

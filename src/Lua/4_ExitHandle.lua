@@ -2,7 +2,7 @@
 -- Nothing really needed to be touched here (Maybe)
 
 addHook("ThinkFrame", function()
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	
 	local exitingCount, playerCount, pizzaCount = PTSR_COUNT()
 	

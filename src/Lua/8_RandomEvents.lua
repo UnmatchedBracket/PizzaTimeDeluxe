@@ -5,7 +5,7 @@ PTSR.currentEvent = nil
 local frozen = true
 
 addHook("MapLoad", function ()
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 
 	if PTSR.currentEvent then
 		if PTSR.currentEvent.name == "mirror" then
@@ -48,7 +48,7 @@ addHook("MapLoad", function ()
 end)
 
 addHook("IntermissionThinker", function ()
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if PTSR.currentEvent then
 		local event = PTSR.currentEvent
 		if event.name == "mirrorPrelude" then
@@ -82,7 +82,7 @@ addHook("PlayerThink", function (p)
 		p.mo.scale = FU
 		p.PTSR_wasmini = false
 	end
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if not PTSR.currentEvent then return end
 	if p.pstate == PST_DEAD or p.spectator or not p.realmo then return end
 	if PTSR.currentEvent.name == "super" then
@@ -100,7 +100,7 @@ addHook("PlayerThink", function (p)
 end)
 
 addHook("ThinkFrame", function ()
-	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if gametype ~= GT_PTSPICER then return end
 	if PTSR.currentEvent and PTSR.currentEvent.name == "super" then
 		emeralds = 127
 	else
