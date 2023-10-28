@@ -28,7 +28,7 @@ addHook("MapLoad", function ()
 		end
 	else
 		if P_RandomChance(FRACUNIT/16) then
-			PTBE.currentEvent = {name = ({"mirrorPrelude", "super", "mini"})[P_RandomRange(1,3)]}
+			PTBE.currentEvent = {name = ({"super", "mini"})[P_RandomRange(1,2)]}
 			if DiscordBot then
 				if PTBE.currentEvent.name == "mirrorPrelude" then
 					DiscordBot.Data.msgsrb2 = $ .. ":mirror: The Chaos Mirror glows...\nThe highest scoring player this round will force their character upon all next round!\n"

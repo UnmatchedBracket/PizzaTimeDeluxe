@@ -101,21 +101,6 @@ rawset(_G, "pfmaskData", {
 	}
 })
 
-local pizzatimemusic = [[{
-    "songs": {
-        "It's Pizza Time!": "PIZTIM",
-        "The Death That I Deservioli": "DEAOLI",
-        "Pillar John's Revenge": "PIJORE",
-        "Gluten Getaway": "GLUWAY",
-        "Pasta La Vista": "PASTVI"
-    },
-    "musicmods": [
-		"musicmodpt.wad"
-	]
-}]]
-
-dofile "Libraries/json.lua"
-
 dofile "HUD Animation/0_Init.lua"
 dofile "HUD Animation/1_UpdatePerFrame.lua"
 

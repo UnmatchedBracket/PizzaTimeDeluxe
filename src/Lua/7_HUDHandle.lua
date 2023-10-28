@@ -141,6 +141,11 @@ end
 
 local itspizzatime_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
+	if PTBE.pizzatime and PTBE.pizzatime_tics then
+		if PTBE.pizzatime_tics < 85
+			v.draw(0, 0, v.cachePatch("PIZZAPAL"), V_50TRANS|V_SNAPTOTOP|V_SNAPTOLEFT|V_PERPLAYER)
+		end
+	end
 	if PTBE.pizzatime and PTBE.pizzatime_tics and PTBE.pizzatime_tics < 10*TICRATE then
 		local patch = v.cachePatch("ITSPIZZATIME1")
 		if CV_PTBE.homework.value then
@@ -171,82 +176,82 @@ local tooltips_hud = function(v,player)
 
 
 	if (not player.pizzaface) and (player.exiting) and (not PTBE.quitting) and (player.playerstate ~= PST_DEAD) and (exitingCount ~= playerCount) then
-		v.drawString(160, 120, "\x85\* Press FIRE to try a new lap! *", V_TRANSLUCENT|V_SNAPTOBOTTOM|V_PERPLAYER, "center")
+		v.drawString(160, 120, "\x85\* Press FIRE to try a new lap! *", V_TRANSLUCENT|V_SNAPTOBOTTOM|V_PERPLAYER, "thin-center")
 	end
 	if PTBE.pizzatime then
 
 		
 		if player.stuntime then
-			v.drawString(160, 100, "You will be unfrozen in: "..player.stuntime/TICRATE.. " seconds.", V_TRANSLUCENT|V_SNAPTOBOTTOM|V_PERPLAYER, "center")
+			v.drawString(160, 100, "You will be unfrozen in: "..player.stuntime/TICRATE.. " seconds.", V_TRANSLUCENT|V_SNAPTOBOTTOM|V_PERPLAYER, "thin-center")
 		end
 		
 
 		if timeafteranimation then
 			if timeafteranimation < 10 then
 				if (playerCount == 1) then
-					v.drawString(165, 157, practicemodetext, V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "center")
+					v.drawString(165, 157, practicemodetext, V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 				end
 				if player.pizzaface then
 					if player.pizzachargecooldown then
-						v.drawString(165, 157, "\x85\* COOLING DOWN *", V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "center")
+						v.drawString(165, 157, "\x85\* COOLING DOWN *", V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 					elseif player.pizzacharge then
 						local percentage = FixedMul(FixedDiv(1*FRACUNIT, 35*FRACUNIT),35*FRACUNIT)>>FRACBITS
 						
-						v.drawString(165, 157, "\x85\* CHARGING \$percentage\% *", V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "center")
+						v.drawString(165, 157, "\x85\* CHARGING \$percentage\% *", V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 					else
-						v.drawString(165, 157, "\x85\* HOLD FIRE TO TELEPORT *", V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "center")
+						v.drawString(165, 157, "\x85\* HOLD FIRE TO TELEPORT *", V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 					end
 				end
 				-- Early returns start here --
 				if player.pizzaface and CV_PTBE.lappingtype.value == 2 then return end
 				if CV_PTBE.lappingtype.value == 2 then
-					v.drawString(165, 165, lapsperplayertext , V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "center")
+					v.drawString(165, 165, lapsperplayertext , V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 					return
 				end
 				if CV_PTBE.dynamiclaps.value then
-					v.drawString(165, 165, dynamiclapstext , V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "center")
+					v.drawString(165, 165, dynamiclapstext , V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 					return
 				end
 				
 				if CV_PTBE.maxlaps.value then
-					v.drawString(165, 165, lapsandmaxlapstext, V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "center")
+					v.drawString(165, 165, lapsandmaxlapstext, V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 					return
 				else
-					v.drawString(165, 165, lapstext, V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "center")
+					v.drawString(165, 165, lapstext, V_SNAPTOBOTTOM|(10-timeafteranimation)<<V_ALPHASHIFT, "thin-center")
 					return
 				end
 			else
 				if (playerCount == 1) then
-					v.drawString(165, 157,practicemodetext , V_SNAPTOBOTTOM, "center")
+					v.drawString(165, 157,practicemodetext , V_SNAPTOBOTTOM, "thin-center")
 				end
 				if player.pizzaface then
 					if player.pizzachargecooldown then
-						v.drawString(165, 157, "\x85\* COOLING DOWN *", V_SNAPTOBOTTOM, "center")
+						v.drawString(165, 157, "\x85\* COOLING DOWN *", V_SNAPTOBOTTOM, "thin-center")
 					elseif player.pizzacharge then
 						local percentage = (FixedDiv(player.pizzacharge*FRACUNIT, 35*FRACUNIT)*100)>>FRACBITS
 						
-						v.drawString(165, 157, "\x85\* CHARGING \$percentage\% *", V_SNAPTOBOTTOM, "center")
+						v.drawString(165, 157, "\x85\* CHARGING \$percentage\% *", V_SNAPTOBOTTOM, "thin-center")
 					else
-						v.drawString(165, 157, "\x85\* HOLD FIRE TO TELEPORT *", V_SNAPTOBOTTOM, "center")
+						v.drawString(165, 157, "\x85\* HOLD FIRE TO TELEPORT *", V_SNAPTOBOTTOM, "thin-center")
 					end
 				end
 				-- Early returns start here --
 				if player.pizzaface and CV_PTBE.lappingtype.value == 2 then return end
 				if CV_PTBE.lappingtype.value == 2 then
-					v.drawString(165, 165, lapsperplayertext , V_SNAPTOBOTTOM, "center")
+					v.drawString(165, 165, lapsperplayertext , V_SNAPTOBOTTOM, "thin-center")
 					return
 				end
 				
 				if CV_PTBE.dynamiclaps.value then
-					v.drawString(165, 165, dynamiclapstext, V_SNAPTOBOTTOM, "center")
+					v.drawString(165, 165, dynamiclapstext, V_SNAPTOBOTTOM, "thin-center")
 					return
 				end
 				
 				if CV_PTBE.maxlaps.value then
-					v.drawString(165, 165, lapsandmaxlapstext, V_PERPLAYER|V_SNAPTOBOTTOM, "center")
+					v.drawString(165, 165, lapsandmaxlapstext, V_PERPLAYER|V_SNAPTOBOTTOM, "thin-center")
 					return
 				else
-					v.drawString(165, 165, lapstext, V_PERPLAYER|V_SNAPTOBOTTOM, "center")
+					v.drawString(165, 165, lapstext, V_PERPLAYER|V_SNAPTOBOTTOM, "thin-center")
 					return
 				end
 			end
@@ -254,55 +259,36 @@ local tooltips_hud = function(v,player)
 	end
 end
 
-//taykis stuff
-local function dorandom(v)
-	local r = v.RandomRange(0,1)
-	if r == 0
-		r = -1
-	end
-	return r
-end
-local function getdec(v,random)
-	local r = v.RandomByte() * 256 * random
-	return r
-end
-
 local lap_hud = function(v,player)
 	if gametype ~= GT_PIZZATIMEDELUXE then return end
 	if not player.laptime then return end
 	if player.pizzaface then return end
+	if not (consoleplayer and consoleplayer.valid) then return end
+
+	if not player == consoleplayer then return end
 	
 	local lap2flag = v.cachePatch("LAP2FLAG")
 	local hudst = player["PT@hudstuff"]
 	
-	//shaky effect just like in pt -luigi budd
-	local random = dorandom(v)
-	local shakex = FixedMul(getdec(v,random),3*FU/4)
-	random = dorandom(v)
-	local shakey = FixedMul(getdec(v,random),3*FU/4)
-
 	local cz = {
 		x = 120*FU,
 		start = -100*FU, 
 		finish = 10*FU,
 	}
-
+	
 	cz.y = ease.linear(FixedDiv(hudst.anim*FRACUNIT, 45*FRACUNIT), cz.start, cz.finish)
 
 	if cz.y ~= nil and hudst.anim_active then
 		if player.lapsdid == 2
-			v.drawScaled(cz.x+shakex,cz.y+shakey,FRACUNIT/3, lap2flag, V_SNAPTOTOP)
-		elseif player.lapsdid > 2 then
-			drawSuperText(v,cz.x+shakex,cz.y+shakey,
-				"LAP "..player.lapsdid,
-				{
-					font = "LTFNT",
-					flags = V_SNAPTOTOP,
-					align = "center",
-					scale = FU,
-					fixed = true,
-				}
-			)
+			v.drawScaled(cz.x,cz.y,FRACUNIT/3, lap2flag, V_SNAPTOTOP)
+		elseif player.lapsdid == 3 then
+			v.drawLevelTitle(cz.x/FU,cz.y/FU, "LAP "..player.lapsdid, V_SNAPTOTOP)
+		elseif player.lapsdid == 4 then
+			v.drawLevelTitle(cz.x/FU,cz.y/FU, "LAP "..player.lapsdid, V_SNAPTOTOP|V_YELLOWMAP)
+		elseif player.lapsdid == 5 then
+			v.drawLevelTitle(cz.x/FU,cz.y/FU, "LAP "..player.lapsdid, V_SNAPTOTOP|V_PURPLEMAP)
+		elseif player.lapsdid >= 6 then
+			v.drawLevelTitle(cz.x/FU,cz.y/FU, "LAP "..player.lapsdid, V_SNAPTOTOP|V_REDMAP)
 		end
 	end
 end

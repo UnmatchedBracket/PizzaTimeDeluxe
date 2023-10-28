@@ -171,30 +171,6 @@ local function InitMap2()
 	PTBE.dynamic_maxlaps = playercount*2
 	
 	PTBE.maxrankpoints = PTBE.GetRingCount()*1500
-
-	local file = io.openlocal('client/PizzaTimeDeluxe_Music.txt', 'r+')
-	if not loaded_mods then
-		if not file then
-			local writeitup = io.openlocal('client/PizzaTimeDeluxe_Music.txt', 'w+')
-			if not writeitup then
-				CONS_Printf(consoleplayer, "[PTD] Opening client music config for writing failed")
-			else
-				writeitup:write(pizzatimemusic)
-				file = writeitup
-
-				local data = json.decode(pizzatimemusic)
-				for _,i in pairs(data.musicmods) do
-					COM_BufInsertText(consoleplayer, 'addfile '..i)
-				end
-			end
-		else
-			local data = json.decode(file:read('*a'))
-			for _,i in pairs(data.musicmods) do
-				COM_BufInsertText(consoleplayer, 'addfile '..i)
-			end
-		end
-		loaded_mods = true
-	end
 end
 
 PTBE.ReturnPizzaTimeMusic = function()
@@ -208,33 +184,25 @@ PTBE.ReturnPizzaTimeMusic = function()
 	songdata["Gluten Getaway"] = 'GLUWAY'
 	songdata["Pasta La Vista"] = 'PASTVI'
 
-	local file = io.openlocal("client/PizzaTimeDeluxe_Music.txt", "r") // "thats not a json thats a txt" SHUT THE FUCK UP
-	local newsongdata = 0
-	
-	//only read the file if it exists -luigi budd
-	if file and CV_PTBE.custom_music.value
-		local jsontxt = file:read('*a')
-		file:close()
-		newsongdata = json.decode(jsontxt)
-	end
-
-	local songs = (newsongdata and newsongdata.songs) or songdata
-
 	if PTBE.pizzatime then
-		song = "It's Pizza Time!"
-
 		if consoleplayer.lapsdid == 2 then
 			song = "The Death That I Deservioli"
 		elseif consoleplayer.lapsdid == 3 then
 			song = "Pillar John's Revenge"
-		elseif consoleplayer.lapsdid >= 4 then
-			song = CV_PTBE.oldmusic.value and "Gluten Getaway" or "Pasta La Vista"
+		elseif consoleplayer.lapsdid == 4 then
+			song = "Gluten Getaway"
+		elseif consoleplayer.lapsdid >= 5 then
+			song = "Pasta La Vista"
+		else
+			if consoleplayer.lapsdid <= 1 then
+				song = "It's Pizza Time!"
+			end
 		end
 	end
 
 	// modding check here
 
-	return songs[song] or songdata[song]
+	return songdata[song]
 end
 
 -- doesnt actually trigger or increment lap, just tps you
